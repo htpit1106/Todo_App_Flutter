@@ -14,10 +14,16 @@ class AppTextStyle {
     fontSize: 16,
   );
 
-  static final TextStyle bodySmall = TextStyle(
-    color: Colors.black,
+  static final TextStyle bodyMedium = TextStyle(
+    color: Color(0xFF1B1B1D),
     fontSize: 16,
     fontWeight: FontWeight.w600,
+  );
+
+  static final TextStyle bodySmall = TextStyle(
+    color: Color(0xFF1B1B1D),
+    fontSize: 14,
+    fontWeight: FontWeight.w300,
   );
 
 

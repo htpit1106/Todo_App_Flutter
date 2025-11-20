@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_images.dart';
 
-class OnBoardingScreen extends StatelessWidget {
-  const OnBoardingScreen({super.key});
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
