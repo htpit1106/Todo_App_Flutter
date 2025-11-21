@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_icons.dart';
 import 'package:todo_app/common/app_text_style.dart';
 
@@ -13,7 +14,7 @@ class TodoItem extends StatelessWidget {
       padding: EdgeInsets.only(right: 16, left: 16, top: 8, bottom: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
+        border: Border(bottom: BorderSide(color: AppColors.borderGrayColor, width: 1.0)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
