@@ -45,16 +45,15 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 margin: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(16),
-                    topLeft: Radius.circular(16),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
                   color: Colors.white,
                 ),
 
                 child: ListView(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  children: [for (int i = 0; i < 14; i++) TodoItem()],
+                  children: [for (int i = 0; i < 14; i++) TodoItem(
+                    isCompleted: true,
+                  )],
                 ),
               ),
             ),

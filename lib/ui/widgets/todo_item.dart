@@ -59,26 +59,23 @@ class TodoItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
 
-                children: [
-                  Image.asset(AppIcons.icCategoryTask),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          titleTask ?? "no title",
-                          style: AppTextStyle.bodyMedium,
-                        ),
-                        Text(time ?? "no time", style: AppTextStyle.bodySmall),
-                      ],
-                    ),
-                  ),
-                  Image.asset(AppIcons.icCheckedTrue),
-                ],
-              ),
+        children: [
+          Image.asset(AppIcons.icCategoryTask),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Run 5k', style: AppTextStyle.bodyMedium),
+                Text("4:00 pm", style: AppTextStyle.bodySmall),
+              ],
+            ),
+          ),
+          Image.asset(AppIcons.icCheckedTrue),
+        ],
       ),
+      )
     );
   }
 }

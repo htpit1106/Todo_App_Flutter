@@ -11,4 +11,7 @@ class AppColors {
 
   //text
 
+  //border
+  static final Color borderGrayColor = Color(0xFFE0E0E0);
+
 }
