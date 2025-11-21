@@ -1,0 +1,15 @@
+{
+    "button_add_new_task" : "Add New Task",
+    "title_add_new_task" : "Add New Task",
+    "label_task_title" : "Task Title",
+    "hint_task_title" : "Task Title",
+    "label_category" : "Category",
+    "label_date" : "Date",
+    "label_time" : "Time",
+    "hint_time" : "Time",
+    "label_notes" : "Notes",
+    "hint_notes" : "Notes",
+    "title_app" : "My Todo List",
+    "label_completed": "Completed"
+
+}
