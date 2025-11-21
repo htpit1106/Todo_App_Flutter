@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/common/app_themes.dart';
 import 'package:todo_app/configs/app_config.dart';
 import 'package:todo_app/router/app_router.dart';
 
@@ -15,7 +16,7 @@ class _TodoAppState extends State<TodoApp> {
     return MaterialApp.router(
       routerConfig: AppRouter.router,
       title: AppConfigs.appName,
-
+      theme: AppThemes().theme,
     );
   }
 }
