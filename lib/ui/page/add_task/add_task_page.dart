@@ -37,7 +37,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    Image.asset(AppIcons.icButtonBack, width: 40, height: 40),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Image.asset(
+                        AppIcons.icButtonBack,
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+
                     SizedBox(width: 100),
                     Text(
                       S.of(context).title_add_new_task,
@@ -50,7 +58,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             ),
           ),
           Expanded(
-            // padding: const EdgeInsets.all(16.0),
+
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -77,13 +85,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 ),
                                 SizedBox(width: 24),
                                 ButtonCategory(
+                                  onTap: (){},
                                   icPosition: AppIcons.icCategoryTask,
                                   borderColor: Colors.black,
                                 ),
                                 ButtonCategory(
+                                  onTap: (){},
                                   icPosition: AppIcons.icCategoryGoal,
                                 ),
                                 ButtonCategory(
+                                  onTap: (){},
                                   icPosition: AppIcons.icCategoryEvent,
                                 ),
                               ],
@@ -93,6 +104,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 Flexible(
                                   flex: 1,
                                   child: LabeledTextFormField(
+                                    enable: false,
                                     icPosition: AppIcons.icCalendar,
                                     textLabel: S.of(context).label_date,
                                     hintText: S.of(context).hint_date,
@@ -104,6 +116,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 Flexible(
                                   flex: 1,
                                   child: LabeledTextFormField(
+                                    enable: false,
                                     icPosition: AppIcons.icClock,
                                     textLabel: S.of(context).label_time,
                                     hintText: S.of(context).hint_time,

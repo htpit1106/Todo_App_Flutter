@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/common/app_icons.dart';
-
 import '../../../../common/app_text_style.dart';
 
 class LabeledTextFormField extends StatelessWidget {
@@ -12,7 +10,8 @@ class LabeledTextFormField extends StatelessWidget {
     this.minLine,
     this.isMultiLine = false,
     this.keyboardType,
-    this.icPosition
+    this.icPosition,
+    this.enable = true
   });
 
   final String? textLabel;
@@ -23,6 +22,7 @@ class LabeledTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final bool? isMultiLine;
   final String? icPosition;
+  final bool? enable;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class LabeledTextFormField extends StatelessWidget {
       children: [
         Text(textLabel ?? "no title", style: AppTextStyle.bodyMedium),
         TextFormField(
-          
+          enabled: enable!,
           maxLines: isMultiLine! ? null : 1 ,
           minLines: minLine ?? 1,
           keyboardType: keyboardType ?? TextInputType.none,

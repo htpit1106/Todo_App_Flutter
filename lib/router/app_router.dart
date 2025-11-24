@@ -15,7 +15,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: splash,
-        builder: (context, state) => AddTaskPage(),
+        builder: (context, state) => OnboardingScreen(),
         routes: [
           GoRoute(path: home, name: home,  builder: (context, state) => HomePage() ),
           GoRoute(path: addTask, name: addTask,  builder: (context, state) => AddTaskPage()),
