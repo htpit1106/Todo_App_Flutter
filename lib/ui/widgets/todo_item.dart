@@ -17,7 +17,7 @@ class TodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: isCompleted ? 0.5 : 1,
+      opacity: isCompleted ? 0.7 : 1,
       child: Container(
         width: MediaQuery.widthOf(context),
         height: 60,
