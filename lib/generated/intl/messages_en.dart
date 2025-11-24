@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "button_add_new_task": MessageLookupByLibrary.simpleMessage("Add New Task"),
+    "hint_date": MessageLookupByLibrary.simpleMessage("Date"),
     "hint_notes": MessageLookupByLibrary.simpleMessage("Notes"),
     "hint_task_title": MessageLookupByLibrary.simpleMessage("Task Title"),
     "hint_time": MessageLookupByLibrary.simpleMessage("Time"),

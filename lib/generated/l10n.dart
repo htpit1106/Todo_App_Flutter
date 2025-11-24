@@ -104,6 +104,11 @@ class S {
     return Intl.message('Date', name: 'label_date', desc: '', args: []);
   }
 
+  /// `Date`
+  String get hint_date {
+    return Intl.message('Date', name: 'hint_date', desc: '', args: []);
+  }
+
   /// `Time`
   String get label_time {
     return Intl.message('Time', name: 'label_time', desc: '', args: []);

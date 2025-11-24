@@ -13,7 +13,7 @@ class ButtonPurple extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.widthOf(context),
-
+      height: 56,
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(

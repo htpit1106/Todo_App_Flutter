@@ -5,6 +5,7 @@
     "hint_task_title" : "Task Title",
     "label_category" : "Category",
     "label_date" : "Date",
+    "hint_date" : "Date",
     "label_time" : "Time",
     "hint_time" : "Time",
     "label_notes" : "Notes",

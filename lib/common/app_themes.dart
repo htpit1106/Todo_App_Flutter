@@ -14,9 +14,7 @@ class AppThemes {
         fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(6),
-          borderSide: BorderSide(
-            color: AppColors.borderGrayColor
-          )
+          borderSide: BorderSide.none
         ),
         // icon: Icon(Icons.calendar_today_outlined)
         // filled: true

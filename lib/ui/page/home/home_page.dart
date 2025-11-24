@@ -3,7 +3,7 @@ import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
 import 'package:todo_app/ui/widgets/todo_item.dart';
-
+import 'package:todo_app/generated/l10n.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text("October 20, 2022", style: AppTextStyle.titleSmall),
                   SizedBox(height: 20),
-                  Text("My Todo List", style: AppTextStyle.titleApp),
+                  Text(S.of(context).title_app, style: AppTextStyle.titleApp),
                 ],
               ),
             ),
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
 
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ButtonPurple(onTap: () {}, textButton: "Add New Task"),
+            child: ButtonPurple(onTap: () {}, textButton: S.of(context).button_add_new_task),
           ),
         ],
       ),
