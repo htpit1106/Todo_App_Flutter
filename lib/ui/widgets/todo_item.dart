@@ -16,66 +16,69 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.widthOf(context),
-      height: 60,
-      padding: EdgeInsets.only(right: 16, left: 16, top: 8, bottom: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
-      ),
-      child: isCompleted
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return Opacity(
+      opacity: isCompleted ? 0.5 : 1,
+      child: Container(
+        width: MediaQuery.widthOf(context),
+        height: 60,
+        padding: EdgeInsets.only(right: 16, left: 16, top: 8, bottom: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
+        ),
+        child: !isCompleted
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
 
-              children: [
-                Image.asset(AppIcons.icCategoryTask),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        titleTask ?? "no title",
-                        style: TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          color: Color(0xFF1B1B1D),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
+                children: [
+                  Image.asset(AppIcons.icCategoryTask),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          titleTask ?? "no title",
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            color: Color(0xFF1B1B1D),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
-                      ),
-                      Text(time ?? "no time", style: AppTextStyle.bodySmall),
-                    ],
+                        Text(time ?? "no time", style: AppTextStyle.bodySmall),
+                      ],
+                    ),
                   ),
-                ),
-                Image.asset(AppIcons.icCheckedFalse),
-              ],
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+                  Image.asset(AppIcons.icCheckedFalse),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
 
-              children: [
-                Image.asset(AppIcons.icCategoryTask),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        titleTask ?? "no title",
-                        style: AppTextStyle.bodyMedium,
-                      ),
-                      Text(time ?? "no time", style: AppTextStyle.bodySmall),
-                    ],
+                children: [
+                  Image.asset(AppIcons.icCategoryTask),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          titleTask ?? "no title",
+                          style: AppTextStyle.bodyMedium,
+                        ),
+                        Text(time ?? "no time", style: AppTextStyle.bodySmall),
+                      ],
+                    ),
                   ),
-                ),
-                Image.asset(AppIcons.icCheckedTrue),
-              ],
-            ),
+                  Image.asset(AppIcons.icCheckedTrue),
+                ],
+              ),
+      ),
     );
   }
 }
