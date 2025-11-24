@@ -4,14 +4,24 @@ import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
 import 'package:todo_app/ui/widgets/todo_item.dart';
 import 'package:todo_app/generated/l10n.dart';
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    return const HomeChildPage();
+  }
 }
 
-class _HomePageState extends State<HomePage> {
+
+class HomeChildPage extends StatefulWidget {
+  const HomeChildPage({super.key});
+
+  @override
+  State<HomeChildPage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomeChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +63,8 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   children: [for (int i = 0; i < 14; i++) TodoItem(
                     isCompleted: true,
+                    titleTask: "Run 5k",
+                    time: "4:00 pm",
                   )],
                 ),
               ),

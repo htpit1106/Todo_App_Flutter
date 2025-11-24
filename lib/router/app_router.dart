@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:todo_app/main.dart';
 import 'package:todo_app/ui/on_boarding/onboarding_screen.dart';
 import 'package:todo_app/ui/page/add_task/add_task_page.dart';
 import 'package:todo_app/ui/page/home/home_page.dart';

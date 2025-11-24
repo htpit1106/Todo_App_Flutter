@@ -7,16 +7,29 @@ import 'package:todo_app/ui/page/add_task/widget/labeled_text_form_field.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
 
-class AddTaskPage extends StatefulWidget {
+
+class AddTaskPage extends StatelessWidget {
   const AddTaskPage({super.key});
 
   @override
-  State<AddTaskPage> createState() => _AddTaskPageState();
+  Widget build(BuildContext context) {
+    return AddTaskChildPage();
+  }
 }
 
-class _AddTaskPageState extends State<AddTaskPage> {
+class AddTaskChildPage extends StatefulWidget {
+  const AddTaskChildPage({super.key});
+
+  @override
+  State<AddTaskChildPage> createState() => _AddTaskPageState();
+}
+
+class _AddTaskPageState extends State<AddTaskChildPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController taskTitleController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController timeController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +121,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     icPosition: AppIcons.icCalendar,
                                     textLabel: S.of(context).label_date,
                                     hintText: S.of(context).hint_date,
-                                    controller: taskTitleController,
+                                    controller: dateController,
                                   ),
                                 ),
                                 SizedBox(width: 8),
@@ -120,7 +133,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     icPosition: AppIcons.icClock,
                                     textLabel: S.of(context).label_time,
                                     hintText: S.of(context).hint_time,
-                                    controller: taskTitleController,
+                                    controller: timeController,
                                   ),
                                 ),
                               ],
@@ -132,7 +145,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               keyboardType: TextInputType.multiline,
                               textLabel: S.of(context).label_notes,
                               hintText: S.of(context).hint_notes,
-                              controller: taskTitleController,
+                              controller: notesController,
                             ),
                           ],
                         ),

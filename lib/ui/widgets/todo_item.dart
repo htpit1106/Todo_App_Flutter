@@ -20,62 +20,64 @@ class TodoItem extends StatelessWidget {
       opacity: isCompleted ? 0.7 : 1,
       child: Container(
         width: MediaQuery.widthOf(context),
-        height: 60,
-        padding: EdgeInsets.only(right: 16, left: 16, top: 8, bottom: 8),
+        padding: EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 16),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
         ),
         child: !isCompleted
             ? Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
 
+          children: [
+            Image.asset(AppIcons.icCategoryTask),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(AppIcons.icCategoryTask),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          titleTask ?? "no title",
-                          style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            color: Color(0xFF1B1B1D),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        Text(time ?? "no time", style: AppTextStyle.bodySmall),
-                      ],
+                  Text(
+                    titleTask ?? "no title",
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Color(0xFF1B1B1D),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
-                  Image.asset(AppIcons.icCheckedFalse),
+                  Text(time ?? "no time", style: AppTextStyle.bodySmall),
                 ],
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-
-        children: [
-          Image.asset(AppIcons.icCategoryTask),
-          SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Run 5k', style: AppTextStyle.bodyMedium),
-                Text("4:00 pm", style: AppTextStyle.bodySmall),
-              ],
+              ),
             ),
-          ),
-          Image.asset(AppIcons.icCheckedTrue),
-        ],
+            Image.asset(AppIcons.icCheckedFalse),
+          ],
+        )
+            : Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+
+          children: [
+            Image.asset(AppIcons.icCategoryTask),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    titleTask ?? "no title",
+                    style: AppTextStyle.bodyThroughMedium
+                  ),
+                  Text(time ?? "no time", style: AppTextStyle.bodyThroughSmall),
+                ],
+              ),
+            ),
+            Image.asset(AppIcons.icCheckedTrue),
+          ],
+        ),
       ),
-      )
     );
   }
 }
