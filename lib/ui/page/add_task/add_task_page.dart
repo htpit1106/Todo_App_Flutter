@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/common/app_dimen.dart';
 import 'package:todo_app/common/app_icons.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
@@ -73,7 +74,7 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
           Expanded(
 
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(AppDimen.paddingNormal),
               child: Column(
                 children: [
                   Expanded(

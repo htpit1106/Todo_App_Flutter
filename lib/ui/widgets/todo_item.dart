@@ -8,11 +8,17 @@ class TodoItem extends StatelessWidget {
     required this.isCompleted,
     this.titleTask,
     this.time,
+    this.onTap,
+    this.iconPath,
+    this.borderRadius,
   });
 
   final bool isCompleted;
   final String? titleTask;
   final String? time;
+  final VoidCallback? onTap;
+  final String? iconPath;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -24,59 +30,64 @@ class TodoItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
+          borderRadius: borderRadius,
         ),
         child: !isCompleted
             ? Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
 
-          children: [
-            Image.asset(AppIcons.icCategoryTask),
-            SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    titleTask ?? "no title",
-                    style: TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      color: Color(0xFF1B1B1D),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
+                  Image.asset(iconPath ?? AppIcons.icCategoryEvent),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          titleTask ?? "no title",
+                          style: AppTextStyle.bodyMedium,
+                        ),
+                        Text(time ?? "no time", style: AppTextStyle.bodySmall),
+                      ],
                     ),
                   ),
-                  Text(time ?? "no time", style: AppTextStyle.bodySmall),
-                ],
-              ),
-            ),
-            Image.asset(AppIcons.icCheckedFalse),
-          ],
-        )
-            : Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-
-          children: [
-            Image.asset(AppIcons.icCategoryTask),
-            SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    titleTask ?? "no title",
-                    style: AppTextStyle.bodyThroughMedium
+                  InkWell(
+                    onTap: onTap,
+                    child: Image.asset(AppIcons.icCheckedFalse),
                   ),
-                  Text(time ?? "no time", style: AppTextStyle.bodyThroughSmall),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+
+                children: [
+                  Image.asset(iconPath ?? AppIcons.icCategoryEvent),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          titleTask ?? "no title",
+                          style: AppTextStyle.bodyThroughMedium,
+                        ),
+                        Text(
+                          time ?? "no time",
+                          style: AppTextStyle.bodyThroughSmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: onTap,
+                    child: Image.asset(AppIcons.icCheckedTrue),
+                  ),
                 ],
               ),
-            ),
-            Image.asset(AppIcons.icCheckedTrue),
-          ],
-        ),
       ),
     );
   }
