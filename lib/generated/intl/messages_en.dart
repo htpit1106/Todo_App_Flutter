@@ -35,5 +35,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "label_time": MessageLookupByLibrary.simpleMessage("Time"),
     "title_add_new_task": MessageLookupByLibrary.simpleMessage("Add New Task"),
     "title_app": MessageLookupByLibrary.simpleMessage("My Todo List"),
+    "valid_date_required": MessageLookupByLibrary.simpleMessage(
+      "Date is required",
+    ),
+    "valid_time_required": MessageLookupByLibrary.simpleMessage(
+      "Time is required",
+    ),
+    "valid_title_required": MessageLookupByLibrary.simpleMessage(
+      "Title is required",
+    ),
   };
 }

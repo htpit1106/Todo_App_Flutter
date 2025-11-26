@@ -11,6 +11,9 @@
     "label_notes" : "Notes",
     "hint_notes" : "Notes",
     "title_app" : "My Todo List",
-    "label_completed": "Completed"
+    "label_completed": "Completed",
+    "valid_title_required": "Title is required",
+    "valid_date_required": "Date is required",
+    "valid_time_required": "Time is required"
 
 }

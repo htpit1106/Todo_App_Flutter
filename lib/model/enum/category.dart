@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../common/app_icons.dart';
 
 enum Category { task, event, goal }

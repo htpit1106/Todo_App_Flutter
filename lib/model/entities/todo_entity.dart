@@ -6,7 +6,7 @@ part 'todo_entity.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class TodoEntity {
-  final String id;
+  final String? id;
   final String? title;
   final String? userId;
   final Category? category;
@@ -16,7 +16,7 @@ class TodoEntity {
   bool isCompleted;
 
   TodoEntity({
-    required this.id,
+     this.id,
     this.title,
     this.category,
     this.time,
@@ -31,4 +31,6 @@ class TodoEntity {
       _$TodoEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$TodoEntityToJson(this);
+  Map<String, dynamic> toJsonInsert() => _$TodoEntityToJsonInsert(this);
+
 }

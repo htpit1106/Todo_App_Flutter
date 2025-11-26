@@ -143,6 +143,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Title is required`
+  String get valid_title_required {
+    return Intl.message(
+      'Title is required',
+      name: 'valid_title_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date is required`
+  String get valid_date_required {
+    return Intl.message(
+      'Date is required',
+      name: 'valid_date_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time is required`
+  String get valid_time_required {
+    return Intl.message(
+      'Time is required',
+      name: 'valid_time_required',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

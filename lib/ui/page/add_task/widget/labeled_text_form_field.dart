@@ -11,7 +11,9 @@ class LabeledTextFormField extends StatelessWidget {
     this.isMultiLine = false,
     this.keyboardType,
     this.icPosition,
-    this.enable = true
+    this.readOnly = false,
+    this.validator,
+    this.onTap,
   });
 
   final String? textLabel;
@@ -22,7 +24,9 @@ class LabeledTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final bool? isMultiLine;
   final String? icPosition;
-  final bool? enable;
+  final bool? readOnly;
+  final String? Function(String? value)? validator;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +35,13 @@ class LabeledTextFormField extends StatelessWidget {
       children: [
         Text(textLabel ?? "no title", style: AppTextStyle.bodyMedium),
         TextFormField(
-          enabled: enable!,
-          maxLines: isMultiLine! ? null : 1 ,
+          onTap: onTap,
+          readOnly: readOnly!,
+          maxLines: isMultiLine! ? null : 1,
           minLines: minLine ?? 1,
           keyboardType: keyboardType ?? TextInputType.none,
           controller: controller,
+          validator: validator,
           decoration: InputDecoration(
             hint: Text(hintText ?? "hint??", style: AppTextStyle.bodySmall),
             suffixIcon: icPosition != null ? Image.asset(icPosition!) : null,
