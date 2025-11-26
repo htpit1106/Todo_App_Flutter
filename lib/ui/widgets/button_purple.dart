@@ -11,7 +11,7 @@ class ButtonPurple extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.widthOf(context),
       height: 56,
       child: ElevatedButton(

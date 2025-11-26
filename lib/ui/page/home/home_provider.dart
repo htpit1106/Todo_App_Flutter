@@ -30,6 +30,16 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> updateTodo(String id, TodoEntity todo) async {
+    try {
+      await supabase.from('todo_list').update(todo.toJson()).eq( 'id', id);
+      loadTodos();
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> addNewTask(TodoEntity todo) async {
     try {
       final response = await supabase.from('todo_list').insert(todo.toJsonInsert()).select();

@@ -12,19 +12,26 @@ class AppDateUtils {
   static String formatDate(DateTime time) {
     return DateFormat('MM/dd/yyyy').format(time);
   }
+  static DateTime toDateTime(String date) {
+    return DateTime.parse(date);
+  }
 
-  static String formatTimeOfDayToString(TimeOfDay time, DateTime date) {
+  static TimeOfDay toTimeOfDay(DateTime date){
+    return TimeOfDay.fromDateTime(date);
+  }
+
+
+  static String formatTimeOfDayToString(TimeOfDay time) {
   
-    final dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    final dateTime = DateTime( time.hour, time.minute);
     return DateFormat('hh:mm a').format(dateTime);
     
   }
 
 
   // format dateTime: 4:00 pm
-  static String formatTimeOclock(String time) {
+  static String stringToOclock(String time) {
     DateTime date = DateTime.parse(time);
-
     return DateFormat('hh:mm a').format(date);
   }
 
@@ -32,7 +39,7 @@ class AppDateUtils {
       DateTime initialDate) async {
     final DateTime? selectedDate = await showDatePicker(
         context: context,
-        firstDate: DateTime.now(),
+        firstDate: DateTime(2000),
         lastDate: DateTime(2100),
         initialDate: initialDate
     );

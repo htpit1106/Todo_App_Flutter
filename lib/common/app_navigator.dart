@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 
 import '../router/app_router.dart';
-import 'app_colors.dart';
+
 
 class AppNavigator {
   BuildContext context;
@@ -48,14 +48,6 @@ class AppNavigator {
     );
   }
 
-  // void showLoadingOverlay() {
-  //   context.loaderOverlay.show();
-  // }
-  //
-  // void hideLoadingOverlay() {
-  //   context.loaderOverlay.hide();
-  // }
-
 
   Future<void> openHomePage() {
     while (GoRouter.of(context).canPop()) {
@@ -64,9 +56,6 @@ class AppNavigator {
     return GoRouter.of(context).pushNamed(AppRouter.home);
   }
 
-  void openAddTask({required String id}) {
-    GoRouter.of(context).push(AppRouter.addTask, extra: id);
-  }
 
   /// Show dialog
 

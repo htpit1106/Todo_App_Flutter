@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_dimen.dart';
 import 'package:todo_app/common/app_icons.dart';
@@ -43,17 +44,50 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
   TimeOfDay time = TimeOfDay.now();
   late final AddTaskNavigator _navigator;
   late final HomeProvider _homeProvider;
+  String? titlePage;
+
+  // todo detail
+  TodoEntity? todo;
 
   @override
   void initState() {
     _navigator = AddTaskNavigator(context: context);
     _homeProvider = context.read<HomeProvider>();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getTodo();
+    });
+  }
+
+  void _getTodo() async {
+    final extra = GoRouterState
+        .of(context)
+        .extra;
+    // convert
+
+    if (extra != null && extra is Map<String, dynamic>) {
+      setState(() {
+        todo = extra['todo'];
+        taskTitleController.text = todo!.title ?? '';
+        dateController.text = todo!.time != null ? AppDateUtils.formatDate(DateTime.parse(todo!.time!)) : '';
+        category = todo!.category!;
+        notesController.text = todo!.notes!;
+        titlePage = "Edit Task";
+
+        if (todo!.time != null) {
+          date = AppDateUtils.toDateTime(todo!.time!);
+          time = AppDateUtils.toTimeOfDay(date);
+          timeController.text = AppDateUtils.stringToOclock(todo!.time!);
+        }
+
+        // kieu tra ve la String iso 86
+        // tao ra TimeOfDay -> format dang h
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
         spacing: 24,
@@ -77,7 +111,9 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
 
                     Expanded(
                       child: Text(
-                        S.of(context).title_add_new_task,
+                        titlePage ?? S
+                            .of(context)
+                            .title_add_new_task,
                         style: AppTextStyle.titleSmall,
                         textAlign: TextAlign.center,
                       ),
@@ -104,14 +140,20 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
                           children: [
                             LabeledTextFormField(
                               validator: (value) => AppValidator.validateEmpty(value),
-                              textLabel: S.of(context).label_task_title,
-                              hintText: S.of(context).hint_task_title,
+                              textLabel: S
+                                  .of(context)
+                                  .label_task_title,
+                              hintText: S
+                                  .of(context)
+                                  .hint_task_title,
                               controller: taskTitleController,
                             ),
                             Row(
                               spacing: 16,
                               children: [
-                                Text(S.of(context).label_category, style: AppTextStyle.bodyMedium),
+                                Text(S
+                                    .of(context)
+                                    .label_category, style: AppTextStyle.bodyMedium),
                                 SizedBox(width: 8),
                                 ButtonCategory(
                                   onTap: () {
@@ -151,8 +193,12 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
                                       dateController.text = AppDateUtils.formatDate(date);
                                     },
                                     icPosition: AppIcons.icCalendar,
-                                    textLabel: S.of(context).label_date,
-                                    hintText: S.of(context).hint_date,
+                                    textLabel: S
+                                        .of(context)
+                                        .label_date,
+                                    hintText: S
+                                        .of(context)
+                                        .hint_date,
                                     controller: dateController,
                                   ),
                                 ),
@@ -164,12 +210,16 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
                                     validator: (value) => AppValidator.validateEmpty(value),
                                     onTap: () async {
                                       time = await AppDateUtils.pickerTimeShow(context, time);
-                                      timeController.text = AppDateUtils.formatTimeOfDayToString(time, date);
+                                      timeController.text = AppDateUtils.formatTimeOfDayToString(time);
                                     },
                                     readOnly: true,
                                     icPosition: AppIcons.icClock,
-                                    textLabel: S.of(context).label_time,
-                                    hintText: S.of(context).hint_time,
+                                    textLabel: S
+                                        .of(context)
+                                        .label_time,
+                                    hintText: S
+                                        .of(context)
+                                        .hint_time,
                                     controller: timeController,
                                   ),
                                 ),
@@ -180,8 +230,12 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
                               isMultiLine: true,
                               minLine: 5,
                               keyboardType: TextInputType.multiline,
-                              textLabel: S.of(context).label_notes,
-                              hintText: S.of(context).hint_notes,
+                              textLabel: S
+                                  .of(context)
+                                  .label_notes,
+                              hintText: S
+                                  .of(context)
+                                  .hint_notes,
                               controller: notesController,
                             ),
                           ],
@@ -194,10 +248,7 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
                     child: ButtonPurple(
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          addNewTask();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Add new task success"), duration: Duration(seconds: 2)),
-                          );
+                          onSave();
                         }
                       },
                       textButton: "Save",
@@ -212,17 +263,24 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
     );
   }
 
-  void addNewTask() async {
+  void updateTask() {
+
+  }
+
+  void onSave() async {
     final day = AppDateUtils.dateToStringISO8601(date, time);
-    TodoEntity todo = TodoEntity(
-      isCompleted: false,
-      category: category,
-      createdAt: DateTime.now().toIso8601String(),
-      title: taskTitleController.text,
-      notes: notesController.text,
-      time: day,
+    TodoEntity newTodo = TodoEntity(
+        id: todo?.id,
+        isCompleted: todo?.isCompleted ?? false,
+        category: category,
+        createdAt: DateTime.now().toIso8601String(),
+        title: taskTitleController.text,
+        notes: notesController.text,
+        time: day,
+        userId: todo?.userId
     );
     _navigator.backToHome();
-    await _homeProvider.addNewTask(todo);
+    todo != null ? await _homeProvider.updateTodo(todo!.id!, newTodo) :
+    await _homeProvider.addNewTask(newTodo);
   }
 }

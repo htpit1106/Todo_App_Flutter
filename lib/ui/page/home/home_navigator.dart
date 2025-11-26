@@ -12,7 +12,7 @@ class HomeNavigator extends AppNavigator {
   }
 
   void openDetailTask(TodoEntity todo){
-    context.pushNamed(AppRouter.addTask, extra: todo);
+    context.pushNamed(AppRouter.addTask, extra: {'todo': todo});
   }
 
 

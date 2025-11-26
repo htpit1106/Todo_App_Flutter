@@ -3,7 +3,6 @@ import 'package:todo_app/common/app_themes.dart';
 import 'package:todo_app/configs/app_config.dart';
 import 'package:todo_app/router/app_router.dart';
 import 'package:todo_app/generated/l10n.dart';
-import '';
 class TodoApp extends StatefulWidget {
   const TodoApp({super.key});
 

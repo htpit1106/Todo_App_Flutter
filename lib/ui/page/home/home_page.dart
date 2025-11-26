@@ -72,23 +72,21 @@ class _HomePageState extends State<HomeChildPage> {
                 children: [
                   Text(AppDateUtils.formatDateNow(DateTime.now()), style: AppTextStyle.titleSmall),
                   SizedBox(height: 20),
-                  Text(S
-                      .of(context)
-                      .title_app, style: AppTextStyle.titleApp),
+                  Text(S.of(context).title_app, style: AppTextStyle.titleApp),
                 ],
               ),
             ),
           ),
-          isLoading? Expanded(child: Center(child: CircularProgressIndicator(),)):_buildSuccessList(unCompletedTodos, completedTodos, homeProvider),
+          isLoading
+              ? Expanded(child: Center(child: CircularProgressIndicator()))
+              : _buildSuccessList(unCompletedTodos, completedTodos, homeProvider, navigator),
           Padding(
             padding: const EdgeInsets.all(AppDimen.paddingNormal),
             child: ButtonPurple(
               onTap: () {
                 navigator.openNewTaskPage();
               },
-              textButton: S
-                  .of(context)
-                  .button_add_new_task,
+              textButton: S.of(context).button_add_new_task,
             ),
           ),
         ],
@@ -96,7 +94,12 @@ class _HomePageState extends State<HomeChildPage> {
     );
   }
 
-  Widget _buildSuccessList (List<TodoEntity> unCompletedTodos, List<TodoEntity> completedTodos,HomeProvider homeProvider){
+  Widget _buildSuccessList(
+    List<TodoEntity> unCompletedTodos,
+    List<TodoEntity> completedTodos,
+    HomeProvider homeProvider,
+    HomeNavigator navigator,
+  ) {
     final items = [...unCompletedTodos, if (completedTodos.isNotEmpty) "header", ...completedTodos];
     final totalItemCount = unCompletedTodos.length + (completedTodos.isNotEmpty ? completedTodos.length + 1 : 0);
     return Expanded(
@@ -107,40 +110,42 @@ class _HomePageState extends State<HomeChildPage> {
           child: (unCompletedTodos.isEmpty && completedTodos.isEmpty)
               ? Center(child: Text("List is empty"))
               : ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: AppDimen.paddingNormal),
+                  padding: EdgeInsets.symmetric(horizontal: AppDimen.paddingNormal),
 
-            itemCount: totalItemCount,
-            itemBuilder: (BuildContext context, int index) {
-              final item = items[index];
-              if (item == "header") {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                  child: Text("Completed", style: AppTextStyle.bodyMedium),
-                );
-              }
-              final todo = item as TodoEntity;
-              final currentList = todo.isCompleted ? completedTodos : unCompletedTodos;
-              final currentIndex = currentList.indexOf(item);
-              return TodoItem(
-                onDismissed: () async {
-                  await homeProvider.deleteTask(todo.id!);
-                },
-                id: todo.id,
-                isCompleted: item.isCompleted,
-                titleTask: item.title,
+                  itemCount: totalItemCount,
+                  itemBuilder: (BuildContext context, int index) {
+                    final item = items[index];
+                    if (item == "header") {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+                        child: Text("Completed", style: AppTextStyle.bodyMedium),
+                      );
+                    }
+                    final todo = item as TodoEntity;
+                    final currentList = todo.isCompleted ? completedTodos : unCompletedTodos;
+                    final currentIndex = currentList.indexOf(item);
+                    return TodoItem(
+                      onTap: () {
+                        navigator.openDetailTask(todo);
+                      },
+                      onDismissed: () async {
+                        await homeProvider.deleteTask(todo.id!);
+                      },
+                      id: todo.id,
+                      isCompleted: item.isCompleted,
+                      titleTask: item.title,
 
-                time: AppDateUtils.formatTimeOclock(todo.time ?? DateTime.now().toString()),
-                borderRadius: AppDimen.getBorderRadius(currentIndex, currentList),
-                onTap: () {
-                  homeProvider.toggleCompleted(item.id!, item.isCompleted);
-                },
-                iconPath: getIcPath(item.category ?? Category.task),
-              );
-            },
-          ),
+                      time: AppDateUtils.stringToOclock(todo.time ?? DateTime.now().toString()),
+                      borderRadius: AppDimen.getBorderRadius(currentIndex, currentList),
+                      toggleCompleteStatus: () {
+                        homeProvider.toggleCompleted(item.id!, item.isCompleted);
+                      },
+                      iconPath: getIcPath(item.category ?? Category.task),
+                    );
+                  },
+                ),
         ),
       ),
     );
   }
-
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/common/app_icons.dart';
-import 'package:todo_app/common/app_images.dart';
 
 class ButtonCategory extends StatelessWidget {
   const ButtonCategory({super.key, this.borderColor, this.onTap, this.icPosition});
