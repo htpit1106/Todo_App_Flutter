@@ -7,6 +7,7 @@ import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/model/entities/todo_entity.dart';
 import 'package:todo_app/model/enum/category.dart';
+import 'package:todo_app/network/udid.dart';
 import 'package:todo_app/ui/page/add_task/add_task_navigator.dart';
 import 'package:todo_app/ui/page/add_task/widget/button_category.dart';
 import 'package:todo_app/ui/page/add_task/widget/labeled_text_form_field.dart';
@@ -269,6 +270,7 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
 
   void onSave() async {
     final day = AppDateUtils.dateToStringISO8601(date, time);
+    final udid = await Udid.getUserId();
     TodoEntity newTodo = TodoEntity(
         id: todo?.id,
         isCompleted: todo?.isCompleted ?? false,
@@ -277,7 +279,7 @@ class _AddTaskPageState extends State<AddTaskChildPage> {
         title: taskTitleController.text,
         notes: notesController.text,
         time: day,
-        userId: todo?.userId
+        userId:udid
     );
     _navigator.backToHome();
     todo != null ? await _homeProvider.updateTodo(todo!.id!, newTodo) :

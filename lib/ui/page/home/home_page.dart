@@ -108,7 +108,7 @@ class _HomePageState extends State<HomeChildPage> {
         child: Container(
           margin: EdgeInsets.all(AppDimen.marginSmall),
           child: (unCompletedTodos.isEmpty && completedTodos.isEmpty)
-              ? Center(child: Text("List is empty"))
+              ? Center(child: Text("List is empty", style: AppTextStyle.bodyMedium,))
               : ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: AppDimen.paddingNormal),
 

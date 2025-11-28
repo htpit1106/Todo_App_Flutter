@@ -1,0 +1,18 @@
+{
+"button_add_new_task": "Thêm công việc",
+"title_add_new_task": "Thêm công việc",
+"label_task_title": "Tiêu đề",
+"hint_task_title": "Nhập tiêu đề",
+"label_category": "Danh mục",
+"label_date": "Ngày",
+"hint_date": "Chọn ngày",
+"label_time": "Thời gian",
+"hint_time": "Chọn thời gian",
+"label_notes": "Ghi chú",
+"hint_notes": "Nhập ghi chú",
+"title_app": "Todo của tôi",
+"label_completed": "Hoàn thành",
+"valid_title_required": "Chưa nhập tiêu đề",
+"valid_date_required": "Chưa chọn ngày",
+"valid_time_required": "Chưa chọn thời gian"
+}
