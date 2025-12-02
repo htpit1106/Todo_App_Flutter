@@ -12,22 +12,19 @@ class AppDateUtils {
   static String formatDate(DateTime time) {
     return DateFormat('MM/dd/yyyy').format(time);
   }
+
   static DateTime toDateTime(String date) {
     return DateTime.parse(date);
   }
 
-  static TimeOfDay toTimeOfDay(DateTime date){
+  static TimeOfDay toTimeOfDay(DateTime date) {
     return TimeOfDay.fromDateTime(date);
   }
 
-
   static String formatTimeOfDayToString(TimeOfDay time) {
-  
-    final dateTime = DateTime( time.hour, time.minute);
-    return DateFormat('hh:mm a').format(dateTime);
-    
+    final dateTime = DateTime(1970, 1, 1, time.hour, time.minute);
+    return DateFormat.jm().format(dateTime);
   }
-
 
   // format dateTime: 4:00 pm
   static String stringToOclock(String time) {
@@ -38,30 +35,30 @@ class AppDateUtils {
   static Future<DateTime> pickerDateShow(BuildContext context,
       DateTime initialDate) async {
     final DateTime? selectedDate = await showDatePicker(
-        context: context,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-        initialDate: initialDate
+      context: context,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      initialDate: initialDate,
     );
 
-    return selectedDate?? initialDate;
+    return selectedDate ?? initialDate;
   }
 
   static Future<TimeOfDay> pickerTimeShow(BuildContext context,
       TimeOfDay initialDate) async {
-    final TimeOfDay? selectedTime = await showTimePicker(
-        context: context, initialTime: initialDate);
-    return selectedTime?? initialDate;
+    final TimeOfDay? selectedTime =
+    await showTimePicker(context: context, initialTime: initialDate);
+    return selectedTime ?? initialDate;
   }
 
-  static dateToStringISO8601 (DateTime date, TimeOfDay time){
-     final day = DateTime(
-       date.year,
-       date.month,
-       date.day,
-       time.hour,
-       time.minute
-     );
-     return day.toIso8601String();
+  static String dateToStringISO8601(DateTime date, TimeOfDay time) {
+    final day = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+    return day.toIso8601String();
   }
 }

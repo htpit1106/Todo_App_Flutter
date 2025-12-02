@@ -6,4 +6,5 @@ class AddTaskNavigator extends AppNavigator {
   void backToHome () {
     context.pop();
   }
+
 }

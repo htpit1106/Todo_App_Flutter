@@ -40,6 +40,9 @@ class AppNavigator {
         Map<String, dynamic> queryParameters = const <String, dynamic>{},
         Object? extra,
       }) async {
+    while (GoRouter.of(context).canPop()) {
+      GoRouter.of(context).pop();
+    }
     return GoRouter.of(context).pushReplacementNamed(
       name,
       pathParameters: pathParameters,

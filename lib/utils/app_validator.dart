@@ -9,5 +9,4 @@ class AppValidator {
     return null;
   }
 
-  // static String? validate
 }

@@ -2,31 +2,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:todo_app/main.dart';
 import 'package:todo_app/repository/todo_repository.dart';
 import '../../../model/entities/todo_entity.dart';
-import '../../../network/udid.dart';
+import '../../../services/auth.dart';
 
 class HomeProvider extends ChangeNotifier {
-  List<TodoEntity> todos = [];
+
   List<TodoEntity> completedTodos = [];
   List<TodoEntity> unCompletedTodos = [];
-  final TodoRepository repository;
-
-  HomeProvider({required this.repository});
+  final TodoRepositorImpl repository = TodoRepositorImpl();
+  bool isLoading = false;
   Future<void> loadTodos() async {
-
     try {
-      todos = await repository.getTodos();
+      isLoading = true;
+      final userId = supabase.auth.currentUser!.id;
+      print("Userid: :: $userId");
+      final todos = await repository.getTodos(userId);
       completedTodos = todos.where((e) => e.isCompleted == true).toList();
       unCompletedTodos = todos.where((e) => e.isCompleted == false).toList();
+      isLoading = false;
       notifyListeners();
     } catch (e) {
       debugPrint('Other error: $e');
     }
   }
 
+  /// c617a51d-0ede-4bd9-89f0-03ec9571882b
+
   Future<void> toggleCompleted(String id, bool isCompleted) async {
     try {
       await repository.toggleCompleted(id, isCompleted);
-      loadTodos();
+       loadTodos();
     } catch (e) {
       debugPrint('Toggle completed error: $e');
     }
@@ -60,6 +64,17 @@ class HomeProvider extends ChangeNotifier {
       loadTodos();
     } catch (e) {
       debugPrint('Delete task error: $e');
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await Auth.logout();
+      unCompletedTodos = [];
+      completedTodos = [];
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Logout error: $e');
     }
   }
 }

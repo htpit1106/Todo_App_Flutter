@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/model/entities/todo_entity.dart';
+import 'package:todo_app/router/app_router.dart';
 import 'package:todo_app/ui/page/home/home_provider.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
 import 'package:todo_app/ui/widgets/todo_item.dart';
@@ -29,55 +31,27 @@ class HomeChildPage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomeChildPage> {
-  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
-  }
-
-  void _loadData() async {
-    setState(() {
-      isLoading = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final homeProvider = context.read<HomeProvider>();
+      homeProvider.loadTodos();
     });
-    final homeProvider = context.read<HomeProvider>();
-    await homeProvider.loadTodos();
-    setState(() {
-      isLoading = false;
-    });
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
     final homeProvider = context.watch<HomeProvider>();
     late final navigator = HomeNavigator(context: context);
-
     final unCompletedTodos = homeProvider.unCompletedTodos;
     final completedTodos = homeProvider.completedTodos;
-
     return Scaffold(
       body: Column(
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: Container(
-              height: 222,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage(AppImages.headerImg), fit: BoxFit.cover),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(AppDateUtils.formatDateNow(DateTime.now()), style: AppTextStyle.titleSmall),
-                  SizedBox(height: 20),
-                  Text(S.of(context).title_app, style: AppTextStyle.titleApp),
-                ],
-              ),
-            ),
-          ),
-          isLoading
+          _buildHeader(context, homeProvider, navigator),
+          homeProvider.isLoading
               ? Expanded(child: Center(child: CircularProgressIndicator()))
               : _buildSuccessList(unCompletedTodos, completedTodos, homeProvider, navigator),
           Padding(
@@ -90,6 +64,32 @@ class _HomePageState extends State<HomeChildPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, HomeProvider provider, HomeNavigator navigator) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Container(
+        height: 222,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(AppImages.headerImg), fit: BoxFit.cover),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+             IconButton(onPressed: (){
+               provider.logout();
+               context.pushReplacementNamed(AppRouter.logIn);
+
+             }, icon: Image.asset("assets/icons/logout.png"),),
+            Text(AppDateUtils.formatDateNow(DateTime.now()), style: AppTextStyle.titleSmall),
+            SizedBox(height: 20),
+            Text(S.of(context).title_app, style: AppTextStyle.titleApp),
+          ],
+        ),
       ),
     );
   }
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomeChildPage> {
         child: Container(
           margin: EdgeInsets.all(AppDimen.marginSmall),
           child: (unCompletedTodos.isEmpty && completedTodos.isEmpty)
-              ? Center(child: Text("List is empty", style: AppTextStyle.bodyMedium,))
+              ? Center(child: Text("List is empty", style: AppTextStyle.bodyMedium))
               : ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: AppDimen.paddingNormal),
 
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomeChildPage> {
                     if (item == "header") {
                       return Padding(
                         padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                        child: Text("Completed", style: AppTextStyle.bodyMedium),
+                        child: Text("Completed", style: unCompletedTodos.isEmpty ? AppTextStyle.titleSmall : AppTextStyle.bodyMedium),
                       );
                     }
                     final todo = item as TodoEntity;

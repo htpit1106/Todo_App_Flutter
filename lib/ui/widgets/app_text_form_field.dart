@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../common/app_text_style.dart';
+import '../../common/app_text_style.dart';
 
-class LabeledTextFormField extends StatelessWidget {
-  const LabeledTextFormField({
+class AppTextFormField extends StatelessWidget {
+  const AppTextFormField({
     super.key,
     this.textLabel,
     this.hintText,
@@ -14,6 +14,8 @@ class LabeledTextFormField extends StatelessWidget {
     this.readOnly = false,
     this.validator,
     this.onTap,
+    this.onChange,
+    this.obscureText
   });
 
   final String? textLabel;
@@ -27,23 +29,26 @@ class LabeledTextFormField extends StatelessWidget {
   final bool? readOnly;
   final String? Function(String? value)? validator;
   final VoidCallback? onTap;
-
+  final Function(String value)? onChange;
+  final bool? obscureText;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(textLabel ?? "no title", style: AppTextStyle.bodyMedium),
+        Text(textLabel ?? "", style: AppTextStyle.bodyMedium,),
         TextFormField(
           onTap: onTap,
           readOnly: readOnly!,
           maxLines: isMultiLine! ? null : 1,
           minLines: minLine ?? 1,
-          keyboardType: keyboardType ?? TextInputType.none,
+          keyboardType: keyboardType ?? TextInputType.text,
           controller: controller,
           validator: validator,
+          onChanged: onChange,
+          obscureText: obscureText?? false,
           decoration: InputDecoration(
-            hint: Text(hintText ?? "hint??", style: AppTextStyle.bodySmall),
+            hint: Text(hintText ?? "", style: AppTextStyle.bodySmall),
             suffixIcon: icPosition != null ? Image.asset(icPosition!) : null,
           ),
         ),

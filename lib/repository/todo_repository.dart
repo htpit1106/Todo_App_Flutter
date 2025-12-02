@@ -2,7 +2,7 @@ import 'package:todo_app/main.dart';
 import 'package:todo_app/model/entities/todo_entity.dart';
 
 abstract class TodoRepository {
-  Future<List<TodoEntity>> getTodos();
+  Future<List<TodoEntity>> getTodos(String userId);
 
   Future<void> toggleCompleted(String id, bool isCompleted);
 
@@ -30,8 +30,8 @@ class TodoRepositorImpl extends TodoRepository{
   }
 
   @override
-  Future<List<TodoEntity>> getTodos() async {
-    final data = await supabase.from('todo_list').select();
+  Future<List<TodoEntity>> getTodos(String userId) async {
+    final data = await supabase.from('todo_list').select().eq('user_id', userId);
     return data.map((e)=> TodoEntity.fromJson(e)).toList();
   }
 
