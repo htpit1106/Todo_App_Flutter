@@ -6,6 +6,7 @@ import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/repository/auth_repository.dart';
 import 'package:todo_app/repository/todo_repository.dart';
+import 'package:todo_app/ui/loading/app_loading_indicator.dart';
 import 'package:todo_app/ui/page/home/home_provider.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
 import 'package:todo_app/ui/widgets/todo_item.dart';
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomeChildPage> with RouteAware {
           Consumer<HomeProvider>(
             builder: (context, value, child) {
               return value.isLoading
-                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  ? Expanded(child: Center(child: AppCircularProgressIndicator()))
                   : _buildSuccessList(context);
             },
           ),
