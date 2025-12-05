@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/common/app_dimen.dart';
+import 'package:todo_app/common/app_icons.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
-import 'package:todo_app/model/entities/todo_entity.dart';
-import 'package:todo_app/router/app_router.dart';
+import 'package:todo_app/repository/auth_repository.dart';
+import 'package:todo_app/repository/todo_repository.dart';
 import 'package:todo_app/ui/page/home/home_provider.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
 import 'package:todo_app/ui/widgets/todo_item.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/utils/app_date_utils.dart';
-import '../../../common/app_dimen.dart';
-import '../../../model/enum/category.dart';
 import 'home_navigator.dart';
 
 class HomePage extends StatelessWidget {
@@ -19,9 +18,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeChildPage();
+    return ChangeNotifierProvider(
+      create: (context) {
+        return HomeProvider(
+          authRepo: context.read<AuthRepository>(),
+          todoRepo: context.read<TodoRepository>(),
+          navigator: HomeNavigator(context: context),
+        );
+      },
+      child: HomeChildPage(),
+    );
   }
 }
+
+// dependency injection
 
 class HomeChildPage extends StatefulWidget {
   const HomeChildPage({super.key});
@@ -30,35 +40,35 @@ class HomeChildPage extends StatefulWidget {
   State<HomeChildPage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomeChildPage> {
+class _HomePageState extends State<HomeChildPage> with RouteAware {
+
+   late final HomeProvider homeProvider;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final homeProvider = context.read<HomeProvider>();
-      homeProvider.loadTodos();
-    });
-    }
-
+     homeProvider = context.read<HomeProvider>();
+    homeProvider.loadListTodos();
+  }
   @override
   Widget build(BuildContext context) {
-    final homeProvider = context.watch<HomeProvider>();
-    late final navigator = HomeNavigator(context: context);
-    final unCompletedTodos = homeProvider.unCompletedTodos;
-    final completedTodos = homeProvider.completedTodos;
     return Scaffold(
       body: Column(
         children: [
-          _buildHeader(context, homeProvider, navigator),
-          homeProvider.isLoading
-              ? Expanded(child: Center(child: CircularProgressIndicator()))
-              : _buildSuccessList(unCompletedTodos, completedTodos, homeProvider, navigator),
+          _buildHeader(context, homeProvider),
+
+          Consumer<HomeProvider>(
+            builder: (context, value, child) {
+              return value.isLoading
+                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  : _buildSuccessList(context);
+            },
+          ),
           Padding(
             padding: const EdgeInsets.all(AppDimen.paddingNormal),
             child: ButtonPurple(
               onTap: () {
-                navigator.openNewTaskPage();
+                context.read<HomeProvider>().onPressAddTaskBtn();
               },
               textButton: S.of(context).button_add_new_task,
             ),
@@ -68,81 +78,92 @@ class _HomePageState extends State<HomeChildPage> {
     );
   }
 
-  Widget _buildHeader(BuildContext context, HomeProvider provider, HomeNavigator navigator) {
-    return Align(
-      alignment: Alignment.topRight,
-      child: Container(
-        height: 222,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(AppImages.headerImg), fit: BoxFit.cover),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-             IconButton(onPressed: (){
-               provider.logout();
-               context.pushReplacementNamed(AppRouter.logIn);
-
-             }, icon: Image.asset("assets/icons/logout.png"),),
-            Text(AppDateUtils.formatDateNow(DateTime.now()), style: AppTextStyle.titleSmall),
-            SizedBox(height: 20),
-            Text(S.of(context).title_app, style: AppTextStyle.titleApp),
-          ],
-        ),
+  Widget _buildHeader(BuildContext context, HomeProvider provider) {
+    return Container(
+      height: 222,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage(AppImages.headerImg), fit: BoxFit.cover),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              onPressed: () {
+                provider.logout();
+              },
+              icon: Image.asset(AppIcons.icLogout, width: 24, height: 24,),
+            ),
+          ),
+          Text(AppDateUtils.formatDateNow(DateTime.now()), style: AppTextStyle.titleSmall),
+          SizedBox(height: 20),
+          Text(S.of(context).title_app, style: AppTextStyle.titleApp),
+        ],
       ),
     );
   }
 
-  Widget _buildSuccessList(
-    List<TodoEntity> unCompletedTodos,
-    List<TodoEntity> completedTodos,
-    HomeProvider homeProvider,
-    HomeNavigator navigator,
-  ) {
-    final items = [...unCompletedTodos, if (completedTodos.isNotEmpty) "header", ...completedTodos];
-    final totalItemCount = unCompletedTodos.length + (completedTodos.isNotEmpty ? completedTodos.length + 1 : 0);
+  Widget _buildSuccessList(BuildContext context) {
+    final homeProvider = context.watch<HomeProvider>();
+    final unCompletedTodos = homeProvider.getUnCompletedTodos;
+    final completedTodos = homeProvider.getCompletedTodos;
     return Expanded(
       child: Transform.translate(
         offset: Offset(0, -50),
         child: Container(
-          margin: EdgeInsets.all(AppDimen.marginSmall),
+          margin: EdgeInsets.all(AppDimen.marginNormal),
           child: (unCompletedTodos.isEmpty && completedTodos.isEmpty)
-              ? Center(child: Text("List is empty", style: AppTextStyle.bodyMedium))
-              : ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: AppDimen.paddingNormal),
+              ? Center(child: Text(S.of(context).label_list_empty, style: AppTextStyle.bodyMedium))
+              : CustomScrollView(
+                  slivers: [
+                    // uncompleted list
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final todo = unCompletedTodos[index];
+                        final currentList = todo.isCompleted ? completedTodos : unCompletedTodos;
+                        final currentIndex = currentList.indexOf(todo);
+                        return TodoItem(
+                          todo: todo,
+                          borderRadius: AppDimen.getBorderRadius(currentIndex, currentList.length),
+                          onTap: () => homeProvider.onPressItem(todo),
+                          onDismissed: () => homeProvider.deleteTask(todo.id!),
+                          toggleCompleteStatus: () => homeProvider.toggleCompleted(todo.id!, todo.isCompleted),
+                        );
 
-                  itemCount: totalItemCount,
-                  itemBuilder: (BuildContext context, int index) {
-                    final item = items[index];
-                    if (item == "header") {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                        child: Text("Completed", style: unCompletedTodos.isEmpty ? AppTextStyle.titleSmall : AppTextStyle.bodyMedium),
-                      );
-                    }
-                    final todo = item as TodoEntity;
-                    final currentList = todo.isCompleted ? completedTodos : unCompletedTodos;
-                    final currentIndex = currentList.indexOf(item);
-                    return TodoItem(
-                      onTap: () {
-                        navigator.openDetailTask(todo);
-                      },
-                      onDismissed: () async {
-                        await homeProvider.deleteTask(todo.id!);
-                      },
-                      id: todo.id,
-                      isCompleted: item.isCompleted,
-                      titleTask: item.title,
+                      }, childCount: unCompletedTodos.length),
+                    ),
 
-                      time: AppDateUtils.stringToOclock(todo.time ?? DateTime.now().toString()),
-                      borderRadius: AppDimen.getBorderRadius(currentIndex, currentList),
-                      toggleCompleteStatus: () {
-                        homeProvider.toggleCompleted(item.id!, item.isCompleted);
-                      },
-                      iconPath: getIcPath(item.category ?? Category.task),
-                    );
-                  },
+                    // header
+                    if (completedTodos.isNotEmpty)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: AppDimen.paddingNormal),
+                          child: Text(
+                            S.of(context).label_completed,
+                            style: unCompletedTodos.isEmpty ? AppTextStyle.titleSmall : AppTextStyle.bodyMedium,
+                          ),
+                        ),
+                      ),
+
+                    // completedTodos
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final todo = completedTodos[index];
+                        final currentList = todo.isCompleted ? completedTodos : unCompletedTodos;
+                        final currentIndex = currentList.indexOf(todo);
+                        return TodoItem(
+                          todo: todo,
+                          borderRadius: AppDimen.getBorderRadius(currentIndex, currentList.length),
+                          onTap: () => homeProvider.onPressItem(todo),
+                          onDismissed: () => homeProvider.deleteTask(todo.id!),
+                          toggleCompleteStatus: () => homeProvider.toggleCompleted(todo.id!, todo.isCompleted),
+                        );
+
+                      }, childCount: completedTodos.length),
+                    ),
+                  ],
                 ),
         ),
       ),

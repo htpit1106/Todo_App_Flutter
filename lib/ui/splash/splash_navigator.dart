@@ -7,8 +7,15 @@ class SplashNavigator extends AppNavigator {
 
   final bool Function()? isMounted;
 
-  void openHome() {
-    Future.delayed(const Duration(seconds: 3));
-    pushReplacementNamed(AppRouter.signUp);
+
+  void goHome() {
+    pushReplacementNamed(AppRouter.home);
+  }
+  void goLogin() {
+    pushReplacementNamed(AppRouter.logIn);
+  }
+
+  void goOnboarding(){
+    pushReplacementNamed(AppRouter.onboarding);
   }
 }

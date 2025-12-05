@@ -1,67 +1,64 @@
 import 'package:flutter/cupertino.dart';
 import 'package:todo_app/main.dart';
+import 'package:todo_app/model/entities/todo_entity.dart';
+import 'package:todo_app/repository/auth_repository.dart';
 import 'package:todo_app/repository/todo_repository.dart';
-import '../../../model/entities/todo_entity.dart';
-import '../../../services/auth.dart';
+import 'package:todo_app/router/app_router.dart';
+import 'package:todo_app/services/auth.dart';
+import 'home_navigator.dart';
 
 class HomeProvider extends ChangeNotifier {
+  List<TodoEntity> _todoItems = [];
+  List<TodoEntity> get getCompletedTodos => _todoItems.where((e) => e.isCompleted == true).toList();
+  List<TodoEntity> get getUnCompletedTodos => _todoItems.where((e) => e.isCompleted == false).toList();
+  final TodoRepository todoRepo;
+  final AuthRepository authRepo;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
-  List<TodoEntity> completedTodos = [];
-  List<TodoEntity> unCompletedTodos = [];
-  final TodoRepositorImpl repository = TodoRepositorImpl();
-  bool isLoading = false;
-  Future<void> loadTodos() async {
+  final HomeNavigator navigator;
+  HomeProvider({required this.authRepo, required this.todoRepo, required this.navigator});
+
+  Future<void> loadListTodos() async {
+    _isLoading = true;
+    await Future.delayed(const Duration(seconds: 1));
+    refreshData();
+
+  }
+  Future <void> refreshData() async {
+    _isLoading = true;
     try {
-      isLoading = true;
+      if (supabase.auth.currentUser == null) {
+        return;
+      }
       final userId = supabase.auth.currentUser!.id;
-      print("Userid: :: $userId");
-      final todos = await repository.getTodos(userId);
-      completedTodos = todos.where((e) => e.isCompleted == true).toList();
-      unCompletedTodos = todos.where((e) => e.isCompleted == false).toList();
-      isLoading = false;
+      final todos = await todoRepo.getTodos(userId);
+
+      _todoItems = todos;
+      _isLoading = false;
       notifyListeners();
     } catch (e) {
-      debugPrint('Other error: $e');
+      debugPrint('get todo error: $e');
     }
   }
 
-  /// c617a51d-0ede-4bd9-89f0-03ec9571882b
 
   Future<void> toggleCompleted(String id, bool isCompleted) async {
     try {
-      await repository.toggleCompleted(id, isCompleted);
-       loadTodos();
+      await todoRepo.toggleCompleted(id, isCompleted);
+      refreshData();
     } catch (e) {
       debugPrint('Toggle completed error: $e');
     }
   }
 
-  Future<void> updateTodo(String id, TodoEntity todo) async {
-    try {
-      await repository.updateTodo(id, todo);
-      loadTodos();
-    } catch (e) {
-      debugPrint('Update error: $e');
-    }
-  }
 
-  Future<void> addNewTask(TodoEntity todo) async {
-    try {
-         TodoEntity? newTodo = await repository.addNewTask(todo);
-        if (newTodo!= null) {
-          unCompletedTodos.add(newTodo);
-        }
 
-      notifyListeners();
-    } catch (e) {
-      debugPrint('Add task error: $e');
-    }
-  }
 
   Future<void> deleteTask(String id) async {
     try {
-      await repository.deleteTask(id);
-      loadTodos();
+      await todoRepo.deleteTask(id);
+      refreshData();
     } catch (e) {
       debugPrint('Delete task error: $e');
     }
@@ -70,11 +67,26 @@ class HomeProvider extends ChangeNotifier {
   Future<void> logout() async {
     try {
       await Auth.logout();
-      unCompletedTodos = [];
-      completedTodos = [];
+      _todoItems.clear();
+      _isLoading = false;
+      navigator.pushReplacementNamed(AppRouter.logIn);
       notifyListeners();
     } catch (e) {
       debugPrint('Logout error: $e');
+    }
+  }
+
+  void onPressItem(TodoEntity todo) async {
+    final result = await navigator.openDetailTask<bool>(todo);
+    if (result == true) {
+      refreshData();
+    }
+  }
+
+  void onPressAddTaskBtn() async {
+    final result = await navigator.openNewTaskPage<bool>();
+    if (result == true) {
+      refreshData();
     }
   }
 }

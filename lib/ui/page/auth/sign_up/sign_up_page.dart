@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/common/app_images.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/ui/page/auth/sign_up/sign_up_navigator.dart';
 import 'package:todo_app/ui/page/auth/sign_up/sign_up_provider.dart';
 import 'package:todo_app/ui/widgets/app_text_form_field.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
-
+import 'package:todo_app/utils/app_validator.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (_) => SignUpProvider(), child: SignUpChildPage());
+    return ChangeNotifierProvider(create: (_) => SignUpProvider(
+      navigator: SignUpNavigator(context: context)
+
+    ), child: SignUpChildPage());
   }
 }
 
@@ -30,8 +35,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<SignUpProvider>();
-    final navigator = SignUpNavigator(context: context);
+    final provider = context.watch<SignUpProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -42,41 +46,40 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 156),
-              Image.asset("assets/images/imag_log.png", height: 128, width: 128, fit: BoxFit.cover),
+              Image.asset(AppImages.signupImg, height: 128, width: 128, fit: BoxFit.cover),
 
               const SizedBox(height: 28),
               AppTextFormField(
                 keyboardType: TextInputType.emailAddress,
                 controller: fullNameTextController,
-                hintText: "Email",
+                hintText: S.of(context).hint_email,
                 onChange: provider.setEmail,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your email";
-                  }
-                  return null;
-                },
+                validator: (value) => AppValidator.validateEmail(value),
               ),
 
               // password
               AppTextFormField(
                 obscureText: true,
                 controller: passwordTextController,
-                hintText: "password",
+                hintText: S.of(context).hint_password,
                 onChange: provider.setPassword,
+                validator: (value) => AppValidator.validatePassword(value),
               ),
               // confirm password
               AppTextFormField(
                 obscureText: true,
                 controller: confirmPasswordTextController,
-                hintText: "confirm password",
+                hintText: S.of(context).hint_confirm_password,
                 onChange: provider.setConfirmPassword,
+                validator: (value) => AppValidator.validateConfirmPassword(value, passwordTextController.text),
               ),
               const SizedBox(height: 16),
               ButtonPurple(
-                textButton: "Sign Up",
+                textButton: S.of(context).button_sign_up,
                 onTap: () {
-                  provider.signUp();
+                  if (_formKey.currentState!.validate()) {
+                    provider.signUp();
+                  }
                 },
               ),
               const SizedBox(height: 24),
@@ -85,9 +88,9 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      navigator.goLogin(context);
+                      provider.goLogin();
                     },
-                    child: Text("Log In"),
+                    child: Text(S.of(context).button_log_in),
                   ),
                 ],
               ),

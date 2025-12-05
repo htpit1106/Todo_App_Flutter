@@ -11,8 +11,8 @@ class AppDimen {
   static const double marginSmall = 8;
 
 
-  static BorderRadius getBorderRadius(index, List items){
-    if(items.length == 1){
+  static BorderRadius getBorderRadius(index, lengthList){
+    if(lengthList == 1){
       return BorderRadius.circular(radiusNormal);
     }
     else if (index == 0) {
@@ -20,7 +20,7 @@ class AppDimen {
         topLeft: Radius.circular(radiusNormal),
         topRight: Radius.circular(radiusNormal),
       );
-    } else if (index == items.length-1) {
+    } else if (index == lengthList-1) {
       return BorderRadius.only(
         bottomLeft: Radius.circular(radiusNormal),
         bottomRight: Radius.circular(radiusNormal),

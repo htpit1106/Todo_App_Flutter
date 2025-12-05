@@ -25,13 +25,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "button_add_new_task": MessageLookupByLibrary.simpleMessage(
       "Thêm công việc",
     ),
+    "button_forgot_password": MessageLookupByLibrary.simpleMessage(
+      "Quên mật khẩu",
+    ),
+    "button_log_in": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
+    "button_login": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
+    "button_save": MessageLookupByLibrary.simpleMessage("Lưu"),
+    "button_sign_up": MessageLookupByLibrary.simpleMessage("Đăng ký"),
+    "hint_confirm_password": MessageLookupByLibrary.simpleMessage(
+      "xác nhận mật khẩu",
+    ),
     "hint_date": MessageLookupByLibrary.simpleMessage("Chọn ngày"),
+    "hint_email": MessageLookupByLibrary.simpleMessage("Email"),
     "hint_notes": MessageLookupByLibrary.simpleMessage("Nhập ghi chú"),
+    "hint_password": MessageLookupByLibrary.simpleMessage("mật khẩu"),
     "hint_task_title": MessageLookupByLibrary.simpleMessage("Nhập tiêu đề"),
     "hint_time": MessageLookupByLibrary.simpleMessage("Chọn thời gian"),
     "label_category": MessageLookupByLibrary.simpleMessage("Danh mục"),
     "label_completed": MessageLookupByLibrary.simpleMessage("Hoàn thành"),
     "label_date": MessageLookupByLibrary.simpleMessage("Ngày"),
+    "label_list_empty": MessageLookupByLibrary.simpleMessage("Danh sách trống"),
     "label_notes": MessageLookupByLibrary.simpleMessage("Ghi chú"),
     "label_task_title": MessageLookupByLibrary.simpleMessage("Tiêu đề"),
     "label_time": MessageLookupByLibrary.simpleMessage("Thời gian"),
@@ -41,6 +54,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_app": MessageLookupByLibrary.simpleMessage("Todo của tôi"),
     "valid_date_required": MessageLookupByLibrary.simpleMessage(
       "Chưa chọn ngày",
+    ),
+    "valid_email_required": MessageLookupByLibrary.simpleMessage(
+      "Vui lòng nhập email của bạn",
     ),
     "valid_time_required": MessageLookupByLibrary.simpleMessage(
       "Chưa chọn thời gian",

@@ -1,37 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/common/app_icons.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/model/entities/todo_entity.dart';
+import 'package:todo_app/model/enum/category.dart';
+import 'package:todo_app/utils/app_date_utils.dart';
 
 class TodoItem extends StatelessWidget {
+  final TodoEntity todo;
+  final VoidCallback? onTap;
+  final VoidCallback? onDismissed;
+  final VoidCallback? toggleCompleteStatus;
+  final BorderRadius? borderRadius;
+
   const TodoItem({
     super.key,
-    required this.isCompleted,
-    this.titleTask,
-    this.time,
-    this.toggleCompleteStatus,
-    this.iconPath,
-    this.borderRadius,
-    this.id,
-    required this.onDismissed,
+    required this.todo,
     this.onTap,
+    this.onDismissed,
+    this.toggleCompleteStatus,
+    this.borderRadius,
   });
-
-  final bool isCompleted;
-  final String? titleTask;
-  final String? time;
-  final VoidCallback? toggleCompleteStatus;
-  final String? iconPath;
-  final BorderRadius? borderRadius;
-  final String? id;
-  final void Function()? onDismissed;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Dismissible(
-        key: ValueKey(id),
+        key: ValueKey(todo.id),
         direction: DismissDirection.endToStart,
         onDismissed: (_) => onDismissed?.call(),
         child: _buildContent(),
@@ -41,44 +36,47 @@ class TodoItem extends StatelessWidget {
 
   Widget _buildContent() {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
+        border: const Border(
+          bottom: BorderSide(color: Colors.grey),
+        ),
         borderRadius: borderRadius,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-
         children: [
           Expanded(
             child: Opacity(
-              opacity: isCompleted ? 0.7 : 1.0,
+              opacity: todo.isCompleted ? 0.7 : 1,
               child: Row(
                 children: [
-                  Image.asset(iconPath ?? AppIcons.icCategoryEvent),
-                  SizedBox(width: 16),
+                  Image.asset(getIcPath(todo.category?? Category.task)),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(titleTask ?? "no title", style: AppTextStyle.bodyMedium),
-                      Text(time ?? "no time", style: AppTextStyle.bodySmall),
+                      Text(todo.title ?? "no title",
+                          style: AppTextStyle.bodyMedium),
+                      Text(AppDateUtils.stringToOclock(todo.time ?? DateTime.now().toString()),
+                          style: AppTextStyle.bodySmall),
                     ],
                   ),
                 ],
               ),
             ),
           ),
-
           InkWell(
             onTap: toggleCompleteStatus,
-            child: Image.asset(isCompleted ? AppIcons.icCheckedTrue : AppIcons.icCheckedFalse),
+            child: Image.asset(
+              todo.isCompleted
+                  ? AppIcons.icCheckedTrue
+                  : AppIcons.icCheckedFalse,
+            ),
           ),
         ],
       ),
     );
   }
 }
+

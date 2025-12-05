@@ -8,20 +8,20 @@ abstract class TodoRepository {
 
   Future<void> updateTodo(String id, TodoEntity todo);
 
-  Future<TodoEntity?> addNewTask(TodoEntity todo);
+  Future<bool> addNewTask(TodoEntity todo);
 
   Future<void> deleteTask(String id);
 }
 
 class TodoRepositorImpl extends TodoRepository{
   @override
-  Future<TodoEntity?> addNewTask(TodoEntity todo) async {
+  Future<bool> addNewTask(TodoEntity todo) async {
     final res = await supabase.from('todo_list').insert(todo.toJsonInsert()).select();
     if (res.isNotEmpty) {
-      return TodoEntity.fromJson(res.first);
+      return true;
 
     }
-    return null;
+    return false;
   }
 
   @override

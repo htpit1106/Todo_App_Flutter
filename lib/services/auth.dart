@@ -1,3 +1,5 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../main.dart';
 
 class Auth {
@@ -12,34 +14,21 @@ class Auth {
     return res.user != null;
   }
 
-  static Future<String> signIn(String email, String password) async {
-    final current = supabase.auth.currentUser;
-
-    // ❗ Chỉ signOut nếu đang anonymous
-    if (current != null && current.isAnonymous == true) {
-      await supabase.auth.signOut();
-    }
-
+  static Future<bool> signIn(String email, String password) async {
     try {
-      final res = await supabase.auth.signInWithPassword(
+       await supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
-
-      return res.user!.id;
+      await Future.delayed(const Duration(milliseconds: 300));
+      return true;
     } catch (e) {
-      print("Login error: $e");
-      return "wrong";
+      return false ;
     }
+
   }
 
   static Future<void> logout() async {
-    // 1. Xóa session của user hiện tại
-    await supabase.auth.signOut();
-
-    // 2. Tạo lại Anonymous user
-    final anonRes = await supabase.auth.signInAnonymously();
-
-    print("Anonymous user: ${anonRes.user?.id}");
+    await supabase.auth.signOut(scope: SignOutScope.global);
   }
 }

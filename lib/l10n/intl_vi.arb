@@ -14,5 +14,21 @@
 "label_completed": "Hoàn thành",
 "valid_title_required": "Chưa nhập tiêu đề",
 "valid_date_required": "Chưa chọn ngày",
-"valid_time_required": "Chưa chọn thời gian"
+"valid_time_required": "Chưa chọn thời gian",
+"button_save": "Lưu",
+"label_list_empty": "Danh sách trống",
+"hint_email": "Email",
+"valid_email_required": "Vui lòng nhập email của bạn",
+"hint_password": "mật khẩu",
+"hint_confirm_password": "xác nhận mật khẩu",
+"button_sign_up": "Đăng ký",
+"button_log_in": "Đăng nhập",
+"button_login": "Đăng nhập",
+"button_forgot_password": "Quên mật khẩu",
+"valid_field_empty": "Trường không được để trống",
+"valid_email_enter": "Vui lòng nhập email của bạn",
+"valid_email_format": "Email không đúng định dạng",
+"valid_password_enter": "Vui lòng nhập mật khẩu của bạn",
+"valid_confirm_password_enter": "Vui lòng nhập lại mật khẩu của bạn",
+"valid_confirm_password_mismatch": "Xác nhận mật khẩu không khớp"
 }

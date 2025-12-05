@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/common/app_colors.dart';
+import 'package:todo_app/common/app_text_style.dart';
 
-import '../../common/app_colors.dart';
-import '../../common/app_text_style.dart';
 
 class ButtonPurple extends StatelessWidget {
   final VoidCallback? onTap;

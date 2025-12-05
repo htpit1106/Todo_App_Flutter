@@ -1,19 +1,18 @@
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/common/app_navigator.dart';
-
-import '../../../model/entities/todo_entity.dart';
-import '../../../router/app_router.dart';
+import 'package:todo_app/model/entities/todo_entity.dart';
+import 'package:todo_app/router/app_router.dart';
 
 class HomeNavigator extends AppNavigator {
   HomeNavigator({required super.context});
 
-  void openNewTaskPage(){
-    context.pushNamed(AppRouter.addTask);
-  }
-
-  void openDetailTask(TodoEntity todo){
-    context.pushNamed(AppRouter.addTask, extra: todo);
+  Future<T?> openNewTaskPage<T>() {
+   return context.push<T>(AppRouter.addTask);
   }
 
 
+
+  Future<T?> openDetailTask<T> (TodoEntity todo) {
+    return context.push(AppRouter.addTask, extra: todo);
+  }
 }

@@ -23,13 +23,26 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "button_add_new_task": MessageLookupByLibrary.simpleMessage("Add New Task"),
+    "button_forgot_password": MessageLookupByLibrary.simpleMessage(
+      "Forgot Password",
+    ),
+    "button_log_in": MessageLookupByLibrary.simpleMessage("Log In"),
+    "button_login": MessageLookupByLibrary.simpleMessage("Login"),
+    "button_save": MessageLookupByLibrary.simpleMessage("Save"),
+    "button_sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
+    "hint_confirm_password": MessageLookupByLibrary.simpleMessage(
+      "confirm password",
+    ),
     "hint_date": MessageLookupByLibrary.simpleMessage("Date"),
+    "hint_email": MessageLookupByLibrary.simpleMessage("Email"),
     "hint_notes": MessageLookupByLibrary.simpleMessage("Notes"),
+    "hint_password": MessageLookupByLibrary.simpleMessage("password"),
     "hint_task_title": MessageLookupByLibrary.simpleMessage("Task Title"),
     "hint_time": MessageLookupByLibrary.simpleMessage("Time"),
     "label_category": MessageLookupByLibrary.simpleMessage("Category"),
     "label_completed": MessageLookupByLibrary.simpleMessage("Completed"),
     "label_date": MessageLookupByLibrary.simpleMessage("Date"),
+    "label_list_empty": MessageLookupByLibrary.simpleMessage("List is empty"),
     "label_notes": MessageLookupByLibrary.simpleMessage("Notes"),
     "label_task_title": MessageLookupByLibrary.simpleMessage("Task Title"),
     "label_time": MessageLookupByLibrary.simpleMessage("Time"),
@@ -37,6 +50,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_app": MessageLookupByLibrary.simpleMessage("My Todo List"),
     "valid_date_required": MessageLookupByLibrary.simpleMessage(
       "Date is required",
+    ),
+    "valid_email_required": MessageLookupByLibrary.simpleMessage(
+      "Please enter your email",
     ),
     "valid_time_required": MessageLookupByLibrary.simpleMessage(
       "Time is required",

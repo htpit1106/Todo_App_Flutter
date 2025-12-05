@@ -6,23 +6,28 @@ import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/model/entities/todo_entity.dart';
 import 'package:todo_app/model/enum/category.dart';
+import 'package:todo_app/repository/todo_repository.dart';
 import 'package:todo_app/ui/page/add_task/add_task_navigator.dart';
 import 'package:todo_app/ui/page/add_task/add_task_provider.dart';
 import 'package:todo_app/ui/page/add_task/widget/button_category.dart';
 import 'package:todo_app/ui/widgets/app_text_form_field.dart';
 import 'package:todo_app/generated/l10n.dart';
-import 'package:todo_app/ui/page/home/home_provider.dart';
 import 'package:todo_app/ui/widgets/button_purple.dart';
+import 'package:todo_app/utils/app_date_utils.dart';
 import 'package:todo_app/utils/app_validator.dart';
-import '../../../utils/app_date_utils.dart';
 
 class AddTaskPage extends StatelessWidget {
   final TodoEntity? todo;
+
   const AddTaskPage({super.key, this.todo});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => AddTaskProvider(),
+      create: (_) => AddTaskProvider(
+        todoRepo: context.read<TodoRepository>(),
+        navigator: AddTaskNavigator(context: context),
+      ),
       child: AddTaskChildPage(todo: todo),
     );
   }
@@ -30,7 +35,9 @@ class AddTaskPage extends StatelessWidget {
 
 class AddTaskChildPage extends StatefulWidget {
   final TodoEntity? todo;
+
   const AddTaskChildPage({super.key, this.todo});
+
   @override
   State<AddTaskChildPage> createState() => _AddTaskChildPageState();
 }
@@ -46,23 +53,22 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
   void initState() {
     super.initState();
 
-    final provider = context.read<AddTaskProvider>();
-
-    if (widget.todo != null) {
-      final todo = widget.todo!;
-      provider.titleTask = todo.title;
-      provider.notes = todo.notes;
-      final date = AppDateUtils.toDateTime(todo.time!);
-      final time = AppDateUtils.toTimeOfDay(date);
-      provider.date = date;
-      provider.time = time;
-    }
-    taskTitleController.text = provider.titleTask ?? "";
-    notesController.text = provider.notes ?? "";
-    dateController.text = AppDateUtils.formatDate(provider.date);
-    timeController.text = AppDateUtils.formatTimeOfDayToString(provider.time);
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<AddTaskProvider>();
+      if (widget.todo != null) {
+        TodoEntity todo = widget.todo!;
+        provider.setTitleTask(todo.title);
+        provider.setNotes(todo.notes);
+        final date = AppDateUtils.toDateTime(todo.time!);
+        final time = AppDateUtils.toTimeOfDay(date);
+        provider.setDate(date);
+        provider.setTime(time);
+      }
+      taskTitleController.text = provider.titleTask ?? "";
+      notesController.text = provider.notes ?? "";
+      dateController.text = AppDateUtils.formatDate(provider.date);
+      timeController.text = AppDateUtils.formatTimeOfDayToString(provider.time);
+
       provider.setCategory(widget.todo?.category ?? Category.task);
     });
   }
@@ -78,14 +84,12 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final navigator = AddTaskNavigator(context: context);
     final provider = context.watch<AddTaskProvider>();
-    final homeProvider = context.read<HomeProvider>();
-
+    final titlePage = widget.todo != null ? "Edit Task" : S.of(context).title_add_new_task;
     return Scaffold(
       body: Column(
         children: [
-          _buildHeader(context, navigator),
+          _buildHeader(context.read<AddTaskProvider>(), titlePage),
           const SizedBox(height: 24),
           Expanded(
             child: SingleChildScrollView(
@@ -99,19 +103,17 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
             child: ButtonPurple(
               onTap: () async {
                 if (_formKey.currentState!.validate()) {
-                  await provider.saveTask(todo: widget.todo, homeProvider: homeProvider);
-                  navigator.backToHome();
+                  await provider.saveTask(todo: widget.todo);
+                  provider.goBackHome(result: true);
                 }
               },
-              textButton: "Save",
+              textButton: S.of(context).button_save,
             ),
           ),
         ],
       ),
     );
   }
-
-
 
   Widget _buildAddFrom(BuildContext context, AddTaskProvider provider) {
     return Form(
@@ -216,7 +218,7 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
     );
   }
 
-  Widget _buildHeader(BuildContext context, AddTaskNavigator navigator) {
+  Widget _buildHeader(AddTaskProvider provider, String titleTask) {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage(AppImages.headerImg), fit: BoxFit.cover),
@@ -229,17 +231,13 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
             children: [
               IconButton(
                 onPressed: () {
-                  navigator.backToHome();
+                  provider.goBackHome(result: false);
                 },
                 icon: Image.asset(AppIcons.icButtonBack, width: 40, height: 40),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  S.of(context).title_add_new_task,
-                  style: AppTextStyle.titleSmall,
-                  textAlign: TextAlign.center,
-                ),
+                child: Text(titleTask, style: AppTextStyle.titleSmall, textAlign: TextAlign.center),
               ),
               const SizedBox(width: 40, height: 40),
             ],

@@ -32,6 +32,7 @@ class AppDateUtils {
     return DateFormat('hh:mm a').format(date);
   }
 
+
   static Future<DateTime> pickerDateShow(BuildContext context,
       DateTime initialDate) async {
     final DateTime? selectedDate = await showDatePicker(
@@ -51,6 +52,8 @@ class AppDateUtils {
     return selectedTime ?? initialDate;
   }
 
+
+  // date to String format IS08601
   static String dateToStringISO8601(DateTime date, TimeOfDay time) {
     final day = DateTime(
       date.year,

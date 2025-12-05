@@ -173,6 +173,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Save`
+  String get button_save {
+    return Intl.message('Save', name: 'button_save', desc: '', args: []);
+  }
+
+  /// `List is empty`
+  String get label_list_empty {
+    return Intl.message(
+      'List is empty',
+      name: 'label_list_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get hint_email {
+    return Intl.message('Email', name: 'hint_email', desc: '', args: []);
+  }
+
+  /// `Please enter your email`
+  String get valid_email_required {
+    return Intl.message(
+      'Please enter your email',
+      name: 'valid_email_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `password`
+  String get hint_password {
+    return Intl.message('password', name: 'hint_password', desc: '', args: []);
+  }
+
+  /// `confirm password`
+  String get hint_confirm_password {
+    return Intl.message(
+      'confirm password',
+      name: 'hint_confirm_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Up`
+  String get button_sign_up {
+    return Intl.message('Sign Up', name: 'button_sign_up', desc: '', args: []);
+  }
+
+  /// `Log In`
+  String get button_log_in {
+    return Intl.message('Log In', name: 'button_log_in', desc: '', args: []);
+  }
+
+  /// `Login`
+  String get button_login {
+    return Intl.message('Login', name: 'button_login', desc: '', args: []);
+  }
+
+  /// `Forgot Password`
+  String get button_forgot_password {
+    return Intl.message(
+      'Forgot Password',
+      name: 'button_forgot_password',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

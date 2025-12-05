@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../common/app_text_style.dart';
+import 'package:todo_app/common/app_text_style.dart';
 
 class AppTextFormField extends StatelessWidget {
   const AppTextFormField({
