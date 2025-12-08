@@ -157,9 +157,9 @@ class _HomePageState extends State<HomeChildPage> with RouteAware {
                         return TodoItem(
                           todo: todo,
                           borderRadius: AppDimen.getBorderRadius(currentIndex, currentList.length),
-                          onTap: () => homeProvider.onPressItem(todo),
+                          // onTap: () => homeProvider.onPressItem(todo),
                           onDismissed: () => homeProvider.deleteTask(todo.id!),
-                          toggleCompleteStatus: () => homeProvider.toggleCompleted(todo.id!, todo.isCompleted),
+                          // toggleCompleteStatus: () => homeProvider.toggleCompleted(todo.id!, todo.isCompleted),
                         );
 
                       }, childCount: completedTodos.length),

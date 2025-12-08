@@ -2,7 +2,11 @@ PODS:
   - app_links (6.4.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
   - flutter_localization (0.0.1):
+    - Flutter
+  - flutter_timezone (0.0.1):
     - Flutter
   - flutter_udid (0.0.1):
     - Flutter
@@ -19,7 +23,9 @@ PODS:
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
+  - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - flutter_udid (from `.symlinks/plugins/flutter_udid/ios`)
   - objective_c (from `.symlinks/plugins/objective_c/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -34,8 +40,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_links/ios"
   Flutter:
     :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_localization:
     :path: ".symlinks/plugins/flutter_localization/ios"
+  flutter_timezone:
+    :path: ".symlinks/plugins/flutter_timezone/ios"
   flutter_udid:
     :path: ".symlinks/plugins/flutter_udid/ios"
   objective_c:
@@ -48,7 +58,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   app_links: 3dbc685f76b1693c66a6d9dd1e9ab6f73d97dc0a
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  flutter_local_notifications: 395056b3175ba4f08480a7c5de30cd36d69827e4
   flutter_localization: 72299fb6cb4e51cae587bd953ed0b958040b71e6
+  flutter_timezone: ee50ce7786b5fde27e2fe5375bbc8c9661ffc13f
   flutter_udid: 92a5d31fe0526b7b6002a2318df702e12e7eb300
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   objective_c: 89e720c30d716b036faf9c9684022048eee1eee2

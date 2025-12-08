@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   flutter_localization
+  flutter_timezone
   flutter_udid
   url_launcher_windows
 )

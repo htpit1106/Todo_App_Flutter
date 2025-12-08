@@ -3,9 +3,9 @@ import 'package:todo_app/main.dart';
 import 'package:todo_app/model/entities/todo_entity.dart';
 import 'package:todo_app/model/enum/category.dart';
 import 'package:todo_app/repository/todo_repository.dart';
+import 'package:todo_app/services/notification_service.dart';
 import 'package:todo_app/ui/page/add_task/add_task_navigator.dart';
 import 'package:todo_app/utils/app_date_utils.dart';
-
 
 class AddTaskProvider extends ChangeNotifier {
   String? _titleTask;
@@ -27,7 +27,10 @@ class AddTaskProvider extends ChangeNotifier {
   final TodoRepository todoRepo;
 
   final AddTaskNavigator navigator;
+
   AddTaskProvider({required this.todoRepo, required this.navigator});
+
+  final NotificationService _notificationService = NotificationService();
 
   void setTitleTask(String? title) {
     _titleTask = title;
@@ -68,7 +71,6 @@ class AddTaskProvider extends ChangeNotifier {
       createdAt: todo?.createdAt ?? AppDateUtils.formatDateNow(DateTime.now()),
     );
 
-
     if (todo != null && todo.id != null) {
       await todoRepo.updateTodo(todo.id!, newTodo);
     } else {
@@ -79,9 +81,20 @@ class AddTaskProvider extends ChangeNotifier {
         navigator.showError("Add new task fail");
       }
     }
+
+    final scheduledTime = DateTime(_date.year, _date.month, _date.day, _time.hour, _time.minute);
+    if (scheduledTime.isAfter(DateTime.now())) {
+      int notificationId = DateTime.now().microsecond ~/ 1000;
+      await _notificationService.scheduleNotification(
+        id: notificationId,
+        title: "Remind task $_titleTask",
+        body: _notes ?? "time to done $_titleTask" ,
+        scheduledDate: scheduledTime,
+      );
+    }
   }
 
-  void goBackHome({bool? result}){
+  void goBackHome({bool? result}) {
     navigator.goBackHome(result: result);
   }
 }

@@ -84,12 +84,12 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<AddTaskProvider>();
     final titlePage = widget.todo != null ? "Edit Task" : S.of(context).title_add_new_task;
+    final provider = context.read<AddTaskProvider>();
     return Scaffold(
       body: Column(
         children: [
-          _buildHeader(context.read<AddTaskProvider>(), titlePage),
+          _buildHeader(provider, titlePage),
           const SizedBox(height: 24),
           Expanded(
             child: SingleChildScrollView(
@@ -131,35 +131,39 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
           const SizedBox(height: 24),
 
           // Category row
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(S.of(context).label_category, style: AppTextStyle.bodyMedium),
-              const SizedBox(width: 8),
-              ButtonCategory(
-                onTap: () {
-                  provider.setCategory(Category.task);
-                },
-                icPosition: AppIcons.icCategoryTask,
-                borderColor: provider.category == Category.task ? Colors.black : Colors.white,
-              ),
-              const SizedBox(width: 16),
-              ButtonCategory(
-                onTap: () {
-                  provider.setCategory(Category.goal);
-                },
-                icPosition: AppIcons.icCategoryGoal,
-                borderColor: provider.category == Category.goal ? Colors.black : Colors.white,
-              ),
-              const SizedBox(width: 16),
-              ButtonCategory(
-                onTap: () {
-                  provider.setCategory(Category.event);
-                },
-                icPosition: AppIcons.icCategoryEvent,
-                borderColor: provider.category == Category.event ? Colors.black : Colors.white,
-              ),
-            ],
+          Consumer<AddTaskProvider>(
+            builder: (context, value, child) {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(S.of(context).label_category, style: AppTextStyle.bodyMedium),
+                  const SizedBox(width: 8),
+                  ButtonCategory(
+                    onTap: () {
+                      provider.setCategory(Category.task);
+                    },
+                    icPosition: AppIcons.icCategoryTask,
+                    borderColor: provider.category == Category.task ? Colors.black : Colors.white,
+                  ),
+                  const SizedBox(width: 16),
+                  ButtonCategory(
+                    onTap: () {
+                      provider.setCategory(Category.goal);
+                    },
+                    icPosition: AppIcons.icCategoryGoal,
+                    borderColor: provider.category == Category.goal ? Colors.black : Colors.white,
+                  ),
+                  const SizedBox(width: 16),
+                  ButtonCategory(
+                    onTap: () {
+                      provider.setCategory(Category.event);
+                    },
+                    icPosition: AppIcons.icCategoryEvent,
+                    borderColor: provider.category == Category.event ? Colors.black : Colors.white,
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 24),
 
