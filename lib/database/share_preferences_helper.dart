@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferencesHelper {
   static const _firstRunKey = "first_run";
   static const _isOnboardingKey = "is_onboarding";
-  static const _currentLanguageKey = 'current_language';
 
 
   static Future <bool> isFirstRun() async {

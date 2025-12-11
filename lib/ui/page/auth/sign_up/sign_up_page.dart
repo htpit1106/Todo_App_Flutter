@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/generated/l10n.dart';
+import 'package:todo_app/repository/profile_repository.dart';
 import 'package:todo_app/ui/page/auth/sign_up/sign_up_navigator.dart';
 import 'package:todo_app/ui/page/auth/sign_up/sign_up_provider.dart';
 import 'package:todo_app/ui/widgets/app_text_form_field.dart';
@@ -14,7 +15,8 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (_) => SignUpProvider(
-      navigator: SignUpNavigator(context: context)
+      navigator: SignUpNavigator(context: context),
+      profileRepo: context.read<ProfileRepository>()
 
     ), child: SignUpChildPage());
   }
@@ -29,10 +31,11 @@ class SignUpChildPage extends StatefulWidget {
 
 class _SignUpChildPageState extends State<SignUpChildPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController fullNameTextController = TextEditingController();
+  final TextEditingController emailTextController = TextEditingController();
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController confirmPasswordTextController = TextEditingController();
-
+  final TextEditingController fullNameTextController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<SignUpProvider>();
@@ -45,16 +48,23 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 156),
+              const SizedBox(height: 100),
               Image.asset(AppImages.signupImg, height: 128, width: 128, fit: BoxFit.cover),
 
               const SizedBox(height: 28),
               AppTextFormField(
-                keyboardType: TextInputType.emailAddress,
+
                 controller: fullNameTextController,
+                hintText: S.of(context).hint_full_name,
+                onChange: provider.setName,
+                validator: (value) => AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
+              ),
+              AppTextFormField(
+                keyboardType: TextInputType.emailAddress,
+                controller: emailTextController,
                 hintText: S.of(context).hint_email,
                 onChange: provider.setEmail,
-                validator: (value) => AppValidator.validateEmail(value),
+                validator: (value) => AppValidator.validateEmail(value, S.of(context).valid_email_enter, S.of(context).valid_email_format),
               ),
 
               // password
@@ -63,7 +73,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                 controller: passwordTextController,
                 hintText: S.of(context).hint_password,
                 onChange: provider.setPassword,
-                validator: (value) => AppValidator.validatePassword(value),
+                validator: (value) => AppValidator.validatePassword(value, S.of(context).valid_password_enter),
               ),
               // confirm password
               AppTextFormField(
@@ -71,7 +81,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                 controller: confirmPasswordTextController,
                 hintText: S.of(context).hint_confirm_password,
                 onChange: provider.setConfirmPassword,
-                validator: (value) => AppValidator.validateConfirmPassword(value, passwordTextController.text),
+                validator: (value) => AppValidator.validateConfirmPassword(value, passwordTextController.text, S.of(context).valid_confirm_password_enter, S.of(context).valid_confirm_password_mismatch),
               ),
               const SizedBox(height: 16),
               ButtonPurple(

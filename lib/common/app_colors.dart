@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class AppColors {
   AppColors._();
@@ -14,4 +14,12 @@ class AppColors {
   //border
   static final Color borderGrayColor = Color(0xFFE0E0E0);
 
+  // divider
+  static const Color divider = Color(0xFFD8D8D8);
+
+  //icon
+
+  static const Color primaryIconColor = Colors.black87;
+
+  static const Color redIconColor = Colors.red;
 }

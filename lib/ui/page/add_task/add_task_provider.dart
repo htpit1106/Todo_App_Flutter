@@ -8,15 +8,10 @@ import 'package:todo_app/utils/app_date_utils.dart';
 
 
 class AddTaskProvider extends ChangeNotifier {
-  String? _titleTask;
-  String? _notes;
+
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
   Category? _category;
-
-  String? get titleTask => _titleTask;
-
-  String? get notes => _notes;
 
   DateTime get date => _date;
 
@@ -29,15 +24,7 @@ class AddTaskProvider extends ChangeNotifier {
   final AddTaskNavigator navigator;
   AddTaskProvider({required this.todoRepo, required this.navigator});
 
-  void setTitleTask(String? title) {
-    _titleTask = title;
-    notifyListeners();
-  }
 
-  void setNotes(String? note) {
-    _notes = note;
-    notifyListeners();
-  }
 
   void setDate(DateTime date) {
     _date = date;
@@ -54,13 +41,13 @@ class AddTaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveTask({TodoEntity? todo}) async {
+  Future<void> saveTask({TodoEntity? todo, String? title, String? notes}) async {
     final day = AppDateUtils.dateToStringISO8601(_date, _time);
     final userId = supabase.auth.currentUser!.id;
     final newTodo = TodoEntity(
       id: todo?.id,
-      title: _titleTask,
-      notes: _notes,
+      title: title,
+      notes: notes,
       time: day,
       category: _category,
       isCompleted: todo?.isCompleted ?? false,

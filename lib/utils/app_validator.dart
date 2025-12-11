@@ -2,44 +2,44 @@ class AppValidator {
   AppValidator._();
 
 
-  static String? validateEmpty(String? value){
+  static String? validateEmpty(String? value, String validFieldEmpty){
     if (value == null || value.trim().isEmpty) {
-      return "Field cannot be empty";
+      return validFieldEmpty;
     }
     return null;
   }
 
-  static String? validateEmail (String? value){
+  static String? validateEmail (String? value, String validEmailRequired, String validEmailFormat){
 
 
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
     if (value == null || value.isEmpty) {
-      return "Please enter your mail";
+      return validEmailRequired;
     }
 
-    return emailRegex.hasMatch(value) ?  null :  "Email is not correct";
+    return emailRegex.hasMatch(value) ?  null :  validEmailFormat;
   }
 
-  static String? validatePassword(String? value) {
+  static String? validatePassword(String? value, String validPasswordEnter) {
 
     if (value == null || value.isEmpty) {
-      return "Please enter your password";
+      return validPasswordEnter;
     }
 
     return null;
   }
 
-  static String? validateConfirmPassword (String? value, String? password){
+  static String? validateConfirmPassword (String? value, String? password, String validConfirmPasswordEnter, String validConfirmPasswordMismatch){
     if (value == null || value.isEmpty) {
-      return "Please enter your password again";
+      return validConfirmPasswordEnter ;
     } else {
       if (value != password) {
-        return "Confirm password not match";
+        return validConfirmPasswordMismatch;
       }
+      }
+    return null;
     }
 
-    return null;
-  }
 
 }

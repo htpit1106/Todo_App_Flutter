@@ -19,12 +19,18 @@ class AppTextStyle {
     fontSize: 16,
     fontWeight: FontWeight.w600,
   );
+  static final TextStyle bodyMediumRed = TextStyle(
+    color: Colors.red,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+  );
 
   static final TextStyle bodySmall = TextStyle(
     color: Color(0xFF1B1B1D),
     fontSize: 14,
     fontWeight: FontWeight.w300,
   );
+  static final TextStyle grayBodySmall = TextStyle(color: Colors.grey[600], fontSize: 12);
   static final TextStyle bodyThroughMedium = TextStyle(
     color: Color(0xFF1B1B1D),
     fontSize: 16,

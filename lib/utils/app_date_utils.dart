@@ -17,6 +17,7 @@ class AppDateUtils {
     return DateTime.parse(date);
   }
 
+
   static TimeOfDay toTimeOfDay(DateTime date) {
     return TimeOfDay.fromDateTime(date);
   }
@@ -37,7 +38,7 @@ class AppDateUtils {
       DateTime initialDate) async {
     final DateTime? selectedDate = await showDatePicker(
       context: context,
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1900),
       lastDate: DateTime(2100),
       initialDate: initialDate,
     );
@@ -63,5 +64,9 @@ class AppDateUtils {
       time.minute,
     );
     return day.toIso8601String();
+  }
+  static String formatStringISO8601(String time) {
+    DateTime date = DateTime.parse(time);
+    return DateFormat('MM/dd/yyyy').format(date);
   }
 }

@@ -52,20 +52,18 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = context.read<AddTaskProvider>();
+      TodoEntity? todo = widget.todo;
       if (widget.todo != null) {
-        TodoEntity todo = widget.todo!;
-        provider.setTitleTask(todo.title);
-        provider.setNotes(todo.notes);
-        final date = AppDateUtils.toDateTime(todo.time!);
+        final date = AppDateUtils.toDateTime(todo!.time!);
         final time = AppDateUtils.toTimeOfDay(date);
         provider.setDate(date);
         provider.setTime(time);
+        taskTitleController.text = todo.title ?? "";
+        notesController.text = todo.notes ?? "";
       }
-      taskTitleController.text = provider.titleTask ?? "";
-      notesController.text = provider.notes ?? "";
+
       dateController.text = AppDateUtils.formatDate(provider.date);
       timeController.text = AppDateUtils.formatTimeOfDayToString(provider.time);
 
@@ -84,7 +82,8 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<AddTaskProvider>();
+    final provider = context.read<AddTaskProvider>();
+
     final titlePage = widget.todo != null ? "Edit Task" : S.of(context).title_add_new_task;
     return Scaffold(
       body: Column(
@@ -103,7 +102,11 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
             child: ButtonPurple(
               onTap: () async {
                 if (_formKey.currentState!.validate()) {
-                  await provider.saveTask(todo: widget.todo);
+                  await provider.saveTask(
+                    todo: widget.todo,
+                    title: taskTitleController.text,
+                    notes: notesController.text,
+                  );
                   provider.goBackHome(result: true);
                 }
               },
@@ -122,44 +125,47 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppTextFormField(
-            validator: (value) => AppValidator.validateEmpty(value),
+            validator: (value) => AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
             textLabel: S.of(context).label_task_title,
             hintText: S.of(context).hint_task_title,
             controller: taskTitleController,
-            onChange: provider.setTitleTask,
           ),
           const SizedBox(height: 24),
 
           // Category row
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(S.of(context).label_category, style: AppTextStyle.bodyMedium),
-              const SizedBox(width: 8),
-              ButtonCategory(
-                onTap: () {
-                  provider.setCategory(Category.task);
-                },
-                icPosition: AppIcons.icCategoryTask,
-                borderColor: provider.category == Category.task ? Colors.black : Colors.white,
-              ),
-              const SizedBox(width: 16),
-              ButtonCategory(
-                onTap: () {
-                  provider.setCategory(Category.goal);
-                },
-                icPosition: AppIcons.icCategoryGoal,
-                borderColor: provider.category == Category.goal ? Colors.black : Colors.white,
-              ),
-              const SizedBox(width: 16),
-              ButtonCategory(
-                onTap: () {
-                  provider.setCategory(Category.event);
-                },
-                icPosition: AppIcons.icCategoryEvent,
-                borderColor: provider.category == Category.event ? Colors.black : Colors.white,
-              ),
-            ],
+          Consumer<AddTaskProvider>(
+            builder: (BuildContext context, value, Widget? child) {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(S.of(context).label_category, style: AppTextStyle.bodyMedium),
+                  const SizedBox(width: 8),
+                  ButtonCategory(
+                    onTap: () {
+                      value.setCategory(Category.task);
+                    },
+                    icPosition: AppIcons.icCategoryTask,
+                    borderColor: value.category == Category.task ? Colors.black : Colors.white,
+                  ),
+                  const SizedBox(width: 16),
+                  ButtonCategory(
+                    onTap: () {
+                      provider.setCategory(Category.goal);
+                    },
+                    icPosition: AppIcons.icCategoryGoal,
+                    borderColor: provider.category == Category.goal ? Colors.black : Colors.white,
+                  ),
+                  const SizedBox(width: 16),
+                  ButtonCategory(
+                    onTap: () {
+                      value.setCategory(Category.event);
+                    },
+                    icPosition: AppIcons.icCategoryEvent,
+                    borderColor: provider.category == Category.event ? Colors.black : Colors.white,
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 24),
 
@@ -169,14 +175,14 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
               Flexible(
                 flex: 1,
                 child: AppTextFormField(
-                  validator: (value) => AppValidator.validateEmpty(value),
+                  validator: (value) => AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
                   readOnly: true,
                   onTap: () async {
                     final date = await AppDateUtils.pickerDateShow(context, provider.date);
                     dateController.text = AppDateUtils.formatDate(date);
                     provider.setDate(date);
                   },
-                  icPosition: AppIcons.icCalendar,
+                  icSuffix: AppIcons.icCalendar,
                   textLabel: S.of(context).label_date,
                   hintText: S.of(context).hint_date,
                   controller: dateController,
@@ -186,14 +192,14 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
               Flexible(
                 flex: 1,
                 child: AppTextFormField(
-                  validator: (value) => AppValidator.validateEmpty(value),
+                  validator: (value) => AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
                   onTap: () async {
                     final time = await AppDateUtils.pickerTimeShow(context, provider.time);
                     timeController.text = AppDateUtils.formatTimeOfDayToString(time);
                     provider.setTime(time);
                   },
                   readOnly: true,
-                  icPosition: AppIcons.icClock,
+                  icSuffix: AppIcons.icClock,
                   textLabel: S.of(context).label_time,
                   hintText: S.of(context).hint_time,
                   controller: timeController,
@@ -210,7 +216,6 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
             textLabel: S.of(context).label_notes,
             hintText: S.of(context).hint_notes,
             controller: notesController,
-            onChange: provider.setNotes,
           ),
           const SizedBox(height: 16),
         ],

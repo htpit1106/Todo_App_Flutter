@@ -12,5 +12,6 @@ class AppIcons {
   static const icClock = "assets/icons/icon=clock.png";
   static const icButtonBack = "assets/icons/button_back.png";
   static const icLogout = "assets/icons/logout.png";
+  static const icAvatar = "assets/icons/ic_avatar.png";
 
 }

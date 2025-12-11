@@ -10,12 +10,13 @@ class AppTextFormField extends StatelessWidget {
     this.minLine,
     this.isMultiLine = false,
     this.keyboardType,
-    this.icPosition,
+    this.icSuffix,
     this.readOnly = false,
     this.validator,
     this.onTap,
     this.onChange,
-    this.obscureText
+    this.obscureText,
+    this.icPrefix
   });
 
   final String? textLabel;
@@ -25,12 +26,13 @@ class AppTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController controller;
   final bool? isMultiLine;
-  final String? icPosition;
+  final String? icSuffix;
   final bool? readOnly;
   final String? Function(String? value)? validator;
   final VoidCallback? onTap;
   final Function(String value)? onChange;
   final bool? obscureText;
+  final IconData? icPrefix;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,8 +50,9 @@ class AppTextFormField extends StatelessWidget {
           onChanged: onChange,
           obscureText: obscureText?? false,
           decoration: InputDecoration(
+            prefixIcon: icPrefix != null ? Icon(icPrefix) : null,
             hint: Text(hintText ?? "", style: AppTextStyle.bodySmall),
-            suffixIcon: icPosition != null ? Image.asset(icPosition!) : null,
+            suffixIcon: icSuffix != null ? Image.asset(icSuffix!) : null,
           ),
         ),
       ],

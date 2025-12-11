@@ -3,8 +3,7 @@ import 'package:todo_app/main.dart';
 import 'package:todo_app/model/entities/todo_entity.dart';
 import 'package:todo_app/repository/auth_repository.dart';
 import 'package:todo_app/repository/todo_repository.dart';
-import 'package:todo_app/router/app_router.dart';
-import 'package:todo_app/services/auth.dart';
+
 import 'home_navigator.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -14,18 +13,22 @@ class HomeProvider extends ChangeNotifier {
   final TodoRepository todoRepo;
   final AuthRepository authRepo;
   bool _isLoading = false;
+  String? _urlAvatar;
+  String? get urlAvatar => _urlAvatar;
+
   bool get isLoading => _isLoading;
 
   final HomeNavigator navigator;
+
   HomeProvider({required this.authRepo, required this.todoRepo, required this.navigator});
 
   Future<void> loadListTodos() async {
     _isLoading = true;
     await Future.delayed(const Duration(seconds: 1));
     refreshData();
-
   }
-  Future <void> refreshData() async {
+
+  Future<void> refreshData() async {
     _isLoading = true;
     try {
       if (supabase.auth.currentUser == null) {
@@ -42,7 +45,6 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-
   Future<void> toggleCompleted(String id, bool isCompleted) async {
     try {
       await todoRepo.toggleCompleted(id, isCompleted);
@@ -52,27 +54,12 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-
-
-
   Future<void> deleteTask(String id) async {
     try {
       await todoRepo.deleteTask(id);
       refreshData();
     } catch (e) {
       debugPrint('Delete task error: $e');
-    }
-  }
-
-  Future<void> logout() async {
-    try {
-      await Auth.logout();
-      _todoItems.clear();
-      _isLoading = false;
-      navigator.pushReplacementNamed(AppRouter.logIn);
-      notifyListeners();
-    } catch (e) {
-      debugPrint('Logout error: $e');
     }
   }
 
@@ -87,6 +74,15 @@ class HomeProvider extends ChangeNotifier {
     final result = await navigator.openNewTaskPage<bool>();
     if (result == true) {
       refreshData();
+    }
+  }
+
+  Future <void> onPressDinosaur() async {
+    final urlAvatarResult =  await navigator.openProfilePage();
+
+    if (urlAvatarResult != null) {
+      _urlAvatar = urlAvatarResult;
+      notifyListeners();
     }
   }
 }

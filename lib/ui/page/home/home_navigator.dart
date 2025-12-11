@@ -7,12 +7,14 @@ class HomeNavigator extends AppNavigator {
   HomeNavigator({required super.context});
 
   Future<T?> openNewTaskPage<T>() {
-   return context.push<T>(AppRouter.addTask);
+    return context.push<T>(AppRouter.addTask);
   }
 
-
-
-  Future<T?> openDetailTask<T> (TodoEntity todo) {
+  Future<T?> openDetailTask<T>(TodoEntity todo) {
     return context.push(AppRouter.addTask, extra: todo);
+  }
+
+  Future<T?> openProfilePage<T>(){
+   return  context.push(AppRouter.profile);
   }
 }

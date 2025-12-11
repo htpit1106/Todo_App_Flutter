@@ -54,8 +54,7 @@ class _LogInChildPageState extends State<LogInChildPage> {
                 controller: emailTextController,
                 hintText: S.of(context).hint_email,
                 onChange: provider.setEmail,
-                validator: (value) => AppValidator.validateEmail(value)
-                  
+                validator: (value) => AppValidator.validateEmail(value, S.of(context).valid_email_required, S.of(context).valid_email_format),
               ),
 
               // password
@@ -64,7 +63,7 @@ class _LogInChildPageState extends State<LogInChildPage> {
                 controller: passwordTextController,
                 hintText: S.of(context).hint_password,
                 onChange: provider.setPassword,
-                validator: (value) => AppValidator.validatePassword(value),
+                validator: (value) => AppValidator.validatePassword(value, S.of(context).valid_password_enter),
               ),
 
               // confirm password

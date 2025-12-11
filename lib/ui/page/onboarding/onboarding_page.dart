@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/common/app_images.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/router/app_router.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -42,7 +43,7 @@ class _OnboardingChildPageState extends State<OnboardingChildPage> {
 
 
               Text(
-                "Quản lý công việc dễ dàng",
+                S.of(context).onboarding_title,
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall
@@ -54,7 +55,7 @@ class _OnboardingChildPageState extends State<OnboardingChildPage> {
 
               // --- Mô tả ---
               Text(
-                "Tạo, theo dõi và hoàn thành các công việc mỗi ngày một cách đơn giản.",
+                S.of(context).onboarding_description,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
@@ -69,8 +70,8 @@ class _OnboardingChildPageState extends State<OnboardingChildPage> {
                   onPressed: (){
                     context.goNamed(AppRouter.logIn);
                   },
-                  child: const Text(
-                    "Bắt đầu",
+                  child: Text(
+                    S.of(context).onboarding_button_start,
                     style: TextStyle(fontSize: 16),
                   ),
                 ),

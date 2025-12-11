@@ -30,13 +30,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "button_login": MessageLookupByLibrary.simpleMessage("Login"),
     "button_save": MessageLookupByLibrary.simpleMessage("Save"),
     "button_sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
+    "button_upload_avatar": MessageLookupByLibrary.simpleMessage(
+      "Upload avatar",
+    ),
+    "hint_birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
     "hint_confirm_password": MessageLookupByLibrary.simpleMessage(
-      "confirm password",
+      "Confirm password",
     ),
     "hint_date": MessageLookupByLibrary.simpleMessage("Date"),
     "hint_email": MessageLookupByLibrary.simpleMessage("Email"),
+    "hint_full_name": MessageLookupByLibrary.simpleMessage("Your full name"),
+    "hint_name": MessageLookupByLibrary.simpleMessage("Name"),
     "hint_notes": MessageLookupByLibrary.simpleMessage("Notes"),
-    "hint_password": MessageLookupByLibrary.simpleMessage("password"),
+    "hint_password": MessageLookupByLibrary.simpleMessage("Password"),
     "hint_task_title": MessageLookupByLibrary.simpleMessage("Task Title"),
     "hint_time": MessageLookupByLibrary.simpleMessage("Time"),
     "label_category": MessageLookupByLibrary.simpleMessage("Category"),
@@ -46,13 +52,56 @@ class MessageLookup extends MessageLookupByLibrary {
     "label_notes": MessageLookupByLibrary.simpleMessage("Notes"),
     "label_task_title": MessageLookupByLibrary.simpleMessage("Task Title"),
     "label_time": MessageLookupByLibrary.simpleMessage("Time"),
+    "menu_change_password": MessageLookupByLibrary.simpleMessage(
+      "Change password",
+    ),
+    "menu_delete_account": MessageLookupByLibrary.simpleMessage(
+      "Delete Account",
+    ),
+    "menu_logout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "menu_terms_and_policy": MessageLookupByLibrary.simpleMessage(
+      "Term & Policy",
+    ),
+    "menu_update_profile": MessageLookupByLibrary.simpleMessage(
+      "Update Profile",
+    ),
+    "onboarding_button_start": MessageLookupByLibrary.simpleMessage(
+      "Get Started",
+    ),
+    "onboarding_description": MessageLookupByLibrary.simpleMessage(
+      "Create, track, and complete daily tasks in a simple way.",
+    ),
+    "onboarding_title": MessageLookupByLibrary.simpleMessage(
+      "Manage tasks easily",
+    ),
     "title_add_new_task": MessageLookupByLibrary.simpleMessage("Add New Task"),
     "title_app": MessageLookupByLibrary.simpleMessage("My Todo List"),
+    "title_update_profile": MessageLookupByLibrary.simpleMessage(
+      "Update Profile",
+    ),
+    "valid_confirm_password_enter": MessageLookupByLibrary.simpleMessage(
+      "Please enter your password again",
+    ),
+    "valid_confirm_password_mismatch": MessageLookupByLibrary.simpleMessage(
+      "Confirm password not match",
+    ),
     "valid_date_required": MessageLookupByLibrary.simpleMessage(
       "Date is required",
     ),
+    "valid_email_enter": MessageLookupByLibrary.simpleMessage(
+      "Please enter your mail",
+    ),
+    "valid_email_format": MessageLookupByLibrary.simpleMessage(
+      "Email is not correct",
+    ),
     "valid_email_required": MessageLookupByLibrary.simpleMessage(
       "Please enter your email",
+    ),
+    "valid_field_empty": MessageLookupByLibrary.simpleMessage(
+      "Field cannot be empty",
+    ),
+    "valid_password_enter": MessageLookupByLibrary.simpleMessage(
+      "Please enter your password",
     ),
     "valid_time_required": MessageLookupByLibrary.simpleMessage(
       "Time is required",

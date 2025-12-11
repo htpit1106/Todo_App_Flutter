@@ -32,11 +32,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "button_login": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
     "button_save": MessageLookupByLibrary.simpleMessage("Lưu"),
     "button_sign_up": MessageLookupByLibrary.simpleMessage("Đăng ký"),
+    "button_upload_avatar": MessageLookupByLibrary.simpleMessage(
+      "Tải ảnh đại diện",
+    ),
+    "hint_birthday": MessageLookupByLibrary.simpleMessage("Ngày sinh"),
     "hint_confirm_password": MessageLookupByLibrary.simpleMessage(
       "xác nhận mật khẩu",
     ),
     "hint_date": MessageLookupByLibrary.simpleMessage("Chọn ngày"),
     "hint_email": MessageLookupByLibrary.simpleMessage("Email"),
+    "hint_full_name": MessageLookupByLibrary.simpleMessage(
+      "Tên đầy đủ của bạn",
+    ),
+    "hint_name": MessageLookupByLibrary.simpleMessage("Tên"),
     "hint_notes": MessageLookupByLibrary.simpleMessage("Nhập ghi chú"),
     "hint_password": MessageLookupByLibrary.simpleMessage("mật khẩu"),
     "hint_task_title": MessageLookupByLibrary.simpleMessage("Nhập tiêu đề"),
@@ -48,15 +56,56 @@ class MessageLookup extends MessageLookupByLibrary {
     "label_notes": MessageLookupByLibrary.simpleMessage("Ghi chú"),
     "label_task_title": MessageLookupByLibrary.simpleMessage("Tiêu đề"),
     "label_time": MessageLookupByLibrary.simpleMessage("Thời gian"),
+    "menu_change_password": MessageLookupByLibrary.simpleMessage(
+      "Đổi mật khẩu",
+    ),
+    "menu_delete_account": MessageLookupByLibrary.simpleMessage(
+      "Xóa tài khoản",
+    ),
+    "menu_logout": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
+    "menu_terms_and_policy": MessageLookupByLibrary.simpleMessage(
+      "Điều khoản & Chính sách",
+    ),
+    "menu_update_profile": MessageLookupByLibrary.simpleMessage(
+      "Cập nhật hồ sơ",
+    ),
+    "onboarding_button_start": MessageLookupByLibrary.simpleMessage("Bắt đầu"),
+    "onboarding_description": MessageLookupByLibrary.simpleMessage(
+      "Tạo, theo dõi và hoàn thành các công việc mỗi ngày một cách đơn giản.",
+    ),
+    "onboarding_title": MessageLookupByLibrary.simpleMessage(
+      "Quản lý công việc dễ dàng",
+    ),
     "title_add_new_task": MessageLookupByLibrary.simpleMessage(
       "Thêm công việc",
     ),
     "title_app": MessageLookupByLibrary.simpleMessage("Todo của tôi"),
+    "title_update_profile": MessageLookupByLibrary.simpleMessage(
+      "Cập nhật hồ sơ",
+    ),
+    "valid_confirm_password_enter": MessageLookupByLibrary.simpleMessage(
+      "Vui lòng nhập lại mật khẩu của bạn",
+    ),
+    "valid_confirm_password_mismatch": MessageLookupByLibrary.simpleMessage(
+      "Xác nhận mật khẩu không khớp",
+    ),
     "valid_date_required": MessageLookupByLibrary.simpleMessage(
       "Chưa chọn ngày",
     ),
+    "valid_email_enter": MessageLookupByLibrary.simpleMessage(
+      "Vui lòng nhập email của bạn",
+    ),
+    "valid_email_format": MessageLookupByLibrary.simpleMessage(
+      "Email không đúng định dạng",
+    ),
     "valid_email_required": MessageLookupByLibrary.simpleMessage(
       "Vui lòng nhập email của bạn",
+    ),
+    "valid_field_empty": MessageLookupByLibrary.simpleMessage(
+      "Trường không được để trống",
+    ),
+    "valid_password_enter": MessageLookupByLibrary.simpleMessage(
+      "Vui lòng nhập mật khẩu của bạn",
     ),
     "valid_time_required": MessageLookupByLibrary.simpleMessage(
       "Chưa chọn thời gian",

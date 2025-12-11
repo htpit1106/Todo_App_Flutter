@@ -16,7 +16,7 @@ abstract class TodoRepository {
 class TodoRepositorImpl extends TodoRepository{
   @override
   Future<bool> addNewTask(TodoEntity todo) async {
-    final res = await supabase.from('todo_list').insert(todo.toJsonInsert()).select();
+    final res = await supabase.from('todo_list').insert(todo.toJson()).select();
     if (res.isNotEmpty) {
       return true;
 

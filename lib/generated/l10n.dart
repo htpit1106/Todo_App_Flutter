@@ -204,15 +204,15 @@ class S {
     );
   }
 
-  /// `password`
+  /// `Password`
   String get hint_password {
-    return Intl.message('password', name: 'hint_password', desc: '', args: []);
+    return Intl.message('Password', name: 'hint_password', desc: '', args: []);
   }
 
-  /// `confirm password`
+  /// `Confirm password`
   String get hint_confirm_password {
     return Intl.message(
-      'confirm password',
+      'Confirm password',
       name: 'hint_confirm_password',
       desc: '',
       args: [],
@@ -239,6 +239,181 @@ class S {
     return Intl.message(
       'Forgot Password',
       name: 'button_forgot_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Field cannot be empty`
+  String get valid_field_empty {
+    return Intl.message(
+      'Field cannot be empty',
+      name: 'valid_field_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your mail`
+  String get valid_email_enter {
+    return Intl.message(
+      'Please enter your mail',
+      name: 'valid_email_enter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is not correct`
+  String get valid_email_format {
+    return Intl.message(
+      'Email is not correct',
+      name: 'valid_email_format',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your password`
+  String get valid_password_enter {
+    return Intl.message(
+      'Please enter your password',
+      name: 'valid_password_enter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your password again`
+  String get valid_confirm_password_enter {
+    return Intl.message(
+      'Please enter your password again',
+      name: 'valid_confirm_password_enter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm password not match`
+  String get valid_confirm_password_mismatch {
+    return Intl.message(
+      'Confirm password not match',
+      name: 'valid_confirm_password_mismatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Profile`
+  String get title_update_profile {
+    return Intl.message(
+      'Update Profile',
+      name: 'title_update_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload avatar`
+  String get button_upload_avatar {
+    return Intl.message(
+      'Upload avatar',
+      name: 'button_upload_avatar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get hint_name {
+    return Intl.message('Name', name: 'hint_name', desc: '', args: []);
+  }
+
+  /// `Birthday`
+  String get hint_birthday {
+    return Intl.message('Birthday', name: 'hint_birthday', desc: '', args: []);
+  }
+
+  /// `Your full name`
+  String get hint_full_name {
+    return Intl.message(
+      'Your full name',
+      name: 'hint_full_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage tasks easily`
+  String get onboarding_title {
+    return Intl.message(
+      'Manage tasks easily',
+      name: 'onboarding_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create, track, and complete daily tasks in a simple way.`
+  String get onboarding_description {
+    return Intl.message(
+      'Create, track, and complete daily tasks in a simple way.',
+      name: 'onboarding_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get Started`
+  String get onboarding_button_start {
+    return Intl.message(
+      'Get Started',
+      name: 'onboarding_button_start',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Profile`
+  String get menu_update_profile {
+    return Intl.message(
+      'Update Profile',
+      name: 'menu_update_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change password`
+  String get menu_change_password {
+    return Intl.message(
+      'Change password',
+      name: 'menu_change_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Term & Policy`
+  String get menu_terms_and_policy {
+    return Intl.message(
+      'Term & Policy',
+      name: 'menu_terms_and_policy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get menu_logout {
+    return Intl.message('Logout', name: 'menu_logout', desc: '', args: []);
+  }
+
+  /// `Delete Account`
+  String get menu_delete_account {
+    return Intl.message(
+      'Delete Account',
+      name: 'menu_delete_account',
       desc: '',
       args: [],
     );

@@ -42,15 +42,15 @@ class HomeChildPage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomeChildPage> with RouteAware {
-
-   late final HomeProvider homeProvider;
+  late final HomeProvider homeProvider;
 
   @override
   void initState() {
     super.initState();
-     homeProvider = context.read<HomeProvider>();
+    homeProvider = context.read<HomeProvider>();
     homeProvider.loadListTodos();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,22 +86,40 @@ class _HomePageState extends State<HomeChildPage> with RouteAware {
       decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage(AppImages.headerImg), fit: BoxFit.cover),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: IconButton(
-              onPressed: () {
-                provider.logout();
-              },
-              icon: Image.asset(AppIcons.icLogout, width: 24, height: 24,),
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 40,),
+                Text(AppDateUtils.formatDateNow(DateTime.now()), style: AppTextStyle.titleSmall),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Consumer<HomeProvider>(
+                    builder: (BuildContext context, value, Widget? child) {
+                      return IconButton(
+                        onPressed: () {
+                          provider.onPressDinosaur();
+                        },
+                        icon: CircleAvatar(
+                          backgroundImage: value.urlAvatar != null
+                              ? NetworkImage(value.urlAvatar!)
+                              : AssetImage(AppIcons.icAvatar) as ImageProvider,
+                          radius: 20,
+                        ),
+                        iconSize: 40,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-          Text(AppDateUtils.formatDateNow(DateTime.now()), style: AppTextStyle.titleSmall),
-          SizedBox(height: 20),
-          Text(S.of(context).title_app, style: AppTextStyle.titleApp),
-        ],
+
+            Text(S.of(context).title_app, style: AppTextStyle.titleApp),
+          ],
+        ),
       ),
     );
   }
@@ -132,7 +150,6 @@ class _HomePageState extends State<HomeChildPage> with RouteAware {
                           onDismissed: () => homeProvider.deleteTask(todo.id!),
                           toggleCompleteStatus: () => homeProvider.toggleCompleted(todo.id!, todo.isCompleted),
                         );
-
                       }, childCount: unCompletedTodos.length),
                     ),
 
@@ -157,11 +174,10 @@ class _HomePageState extends State<HomeChildPage> with RouteAware {
                         return TodoItem(
                           todo: todo,
                           borderRadius: AppDimen.getBorderRadius(currentIndex, currentList.length),
-                          onTap: () => homeProvider.onPressItem(todo),
+                          // onTap: () => homeProvider.onPressItem(todo),
                           onDismissed: () => homeProvider.deleteTask(todo.id!),
-                          toggleCompleteStatus: () => homeProvider.toggleCompleted(todo.id!, todo.isCompleted),
+                          // toggleCompleteStatus: () => homeProvider.toggleCompleted(todo.id!, todo.isCompleted),
                         );
-
                       }, childCount: completedTodos.length),
                     ),
                   ],

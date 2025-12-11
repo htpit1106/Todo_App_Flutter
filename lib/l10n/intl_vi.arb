@@ -30,5 +30,18 @@
 "valid_email_format": "Email không đúng định dạng",
 "valid_password_enter": "Vui lòng nhập mật khẩu của bạn",
 "valid_confirm_password_enter": "Vui lòng nhập lại mật khẩu của bạn",
-"valid_confirm_password_mismatch": "Xác nhận mật khẩu không khớp"
+"valid_confirm_password_mismatch": "Xác nhận mật khẩu không khớp",
+"title_update_profile": "Cập nhật hồ sơ",
+"button_upload_avatar": "Tải ảnh đại diện",
+"hint_name": "Tên",
+"hint_birthday": "Ngày sinh",
+"hint_full_name": "Tên đầy đủ của bạn",
+"onboarding_title": "Quản lý công việc dễ dàng",
+"onboarding_description": "Tạo, theo dõi và hoàn thành các công việc mỗi ngày một cách đơn giản.",
+"onboarding_button_start": "Bắt đầu",
+"menu_update_profile": "Cập nhật hồ sơ",
+"menu_change_password": "Đổi mật khẩu",
+"menu_terms_and_policy": "Điều khoản & Chính sách",
+"menu_logout": "Đăng xuất",
+"menu_delete_account": "Xóa tài khoản"
 }
