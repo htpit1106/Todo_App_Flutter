@@ -32,4 +32,5 @@ class ProfileRepositoryImpl extends ProfileRepository {
       debugPrint("error update");
     }
   }
+
 }

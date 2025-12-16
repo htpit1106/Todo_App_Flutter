@@ -17,17 +17,17 @@ TodoEntity _$TodoEntityFromJson(Map<String, dynamic> json) => TodoEntity(
   userId: json['user_id'] as String?,
 );
 
-Map<String, dynamic> _$TodoEntityToJson(TodoEntity instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'user_id': instance.userId,
-      'category': _$CategoryEnumMap[instance.category],
-      'time': instance.time,
-      'created_at': instance.createdAt,
-      'notes': instance.notes,
-      'is_completed': instance.isCompleted,
-    };
+Map<String, dynamic> _$TodoEntityToJson(TodoEntity instance) => <String, dynamic>{
+  'id': instance.id,
+  'title': instance.title,
+  'user_id': instance.userId,
+  'category': _$CategoryEnumMap[instance.category],
+  'time': instance.time,
+  'created_at': instance.createdAt,
+  'notes': instance.notes,
+  'is_completed': instance.isCompleted,
+};
+
 Map<String, dynamic> _$TodoEntityToJsonInsert(TodoEntity instance) => <String, dynamic>{
   'title': instance.title,
   'user_id': instance.userId,
@@ -38,8 +38,4 @@ Map<String, dynamic> _$TodoEntityToJsonInsert(TodoEntity instance) => <String, d
   'is_completed': instance.isCompleted,
 };
 
-const _$CategoryEnumMap = {
-  Category.task: 'task',
-  Category.event: 'event',
-  Category.goal: 'goal',
-};
+const _$CategoryEnumMap = {Category.task: 'task', Category.event: 'event', Category.goal: 'goal'};

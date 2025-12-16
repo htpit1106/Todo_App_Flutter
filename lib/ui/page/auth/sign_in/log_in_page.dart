@@ -34,55 +34,67 @@ class _LogInChildPageState extends State<LogInChildPage> {
     final formKey = GlobalKey<FormState>();
 
     final TextEditingController emailTextController = TextEditingController(text: provider.email);
-    final TextEditingController passwordTextController = TextEditingController(text: provider.password);
+    final TextEditingController passwordTextController = TextEditingController(
+      text: provider.password,
+    );
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        physics: const ClampingScrollPhysics(),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 156),
-              Image.asset(AppImages.loginImg, height: 128, width: 128, fit: BoxFit.cover),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              physics: const ClampingScrollPhysics(),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 156),
+                    Image.asset(AppImages.loginImg, height: 128, width: 128, fit: BoxFit.cover),
 
-              const SizedBox(height: 28),
-              AppTextFormField(
-                keyboardType: TextInputType.emailAddress,
-                controller: emailTextController,
-                hintText: S.of(context).hint_email,
-                onChange: provider.setEmail,
-                validator: (value) => AppValidator.validateEmail(value, S.of(context).valid_email_required, S.of(context).valid_email_format),
+                    const SizedBox(height: 28),
+                    AppTextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailTextController,
+                      hintText: S.of(context).hint_email,
+                      onChange: provider.setEmail,
+                      validator: (value) => AppValidator.validateEmail(
+                        value,
+                        S.of(context).valid_email_required,
+                        S.of(context).valid_email_format,
+                      ),
+                    ),
+
+                    // password
+                    AppTextFormField(
+                      obscureText: true,
+                      controller: passwordTextController,
+                      hintText: S.of(context).hint_password,
+                      onChange: provider.setPassword,
+                      validator: (value) =>
+                          AppValidator.validatePassword(value, S.of(context).valid_password_enter),
+                    ),
+
+                    // confirm password
+                    const SizedBox(height: 16),
+                    ButtonPurple(
+                      textButton: S.of(context).button_login,
+                      onTap: () {
+                        if (formKey.currentState!.validate()) {
+                          provider.signIn();
+                        }
+                        //
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    _buildSignInWidget(provider),
+                    const SizedBox(height: 24),
+                  ],
+                ),
               ),
-
-              // password
-              AppTextFormField(
-                obscureText: true,
-                controller: passwordTextController,
-                hintText: S.of(context).hint_password,
-                onChange: provider.setPassword,
-                validator: (value) => AppValidator.validatePassword(value, S.of(context).valid_password_enter),
-              ),
-
-              // confirm password
-              const SizedBox(height: 16),
-              ButtonPurple(
-                textButton: S.of(context).button_login,
-                onTap: () {
-                  if (formKey.currentState!.validate()){
-                    provider.signIn();
-                  }
-                  //
-                },
-              ),
-              const SizedBox(height: 24),
-              _buildSignInWidget(provider),
-              const SizedBox(height: 24),
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }

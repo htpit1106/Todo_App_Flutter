@@ -26,6 +26,19 @@ class AddTaskProvider extends ChangeNotifier {
 
 
 
+  void initialData(TodoEntity? todo){
+    if (todo != null) {
+      final date = AppDateUtils.toDateTime(todo.time!);
+      final time = AppDateUtils.toTimeOfDay(date);
+      _date = date;
+      _time = time;
+      _category = todo.category;
+
+    }
+    return;
+
+  }
+
   void setDate(DateTime date) {
     _date = date;
     notifyListeners();

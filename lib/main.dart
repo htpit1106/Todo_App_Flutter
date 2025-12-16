@@ -8,6 +8,8 @@ import 'package:todo_app/repository/todo_repository.dart';
 import 'package:todo_app/services/supabase_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'network/supabase_client.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('en_US', null);
@@ -16,7 +18,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         Provider<AuthRepository>(create: (_) => AuthRepositoryImpl()),
-        Provider<TodoRepository>(create: (_) => TodoRepositorImpl()),
+        Provider<TodoRepository>(create: (_) => TodoRepositorImpl(SupabaseApiClient(supabase))),
         Provider<ProfileRepository> (create: (_)=>ProfileRepositoryImpl(),)
       ],
       child: const TodoApp(),

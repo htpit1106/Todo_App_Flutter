@@ -38,7 +38,10 @@ class AppRouter {
       ),
       GoRoute(path: signUp, name: signUp, builder: (context, state) => SignUpPage()),
       GoRoute(path: logIn, name: logIn, builder: (context, state) => LogInPage()),
-      GoRoute(path: profile, name: profile, builder: (context, state) => ProfilePage()),
+      GoRoute(path: profile, name: profile, builder: (context, state)  {
+
+        return ProfilePage();
+      }),
       GoRoute(path: updateProfile, name: updateProfile, builder: (context, state) {
         final profileEntity = state.extra as ProfileEntity;
         return UpdateProfilePage(profileEntity: profileEntity);

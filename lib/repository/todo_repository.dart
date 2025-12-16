@@ -1,7 +1,9 @@
 import 'package:todo_app/main.dart';
 import 'package:todo_app/model/entities/todo_entity.dart';
+import 'package:todo_app/network/supabase_client.dart';
 
 abstract class TodoRepository {
+
   Future<List<TodoEntity>> getTodos(String userId);
 
   Future<void> toggleCompleted(String id, bool isCompleted);
@@ -14,36 +16,32 @@ abstract class TodoRepository {
 }
 
 class TodoRepositorImpl extends TodoRepository{
+  final SupabaseApiClient supabaseClient;
+  TodoRepositorImpl(this.supabaseClient);
+
   @override
   Future<bool> addNewTask(TodoEntity todo) async {
-    final res = await supabase.from('todo_list').insert(todo.toJson()).select();
-    if (res.isNotEmpty) {
-      return true;
-
-    }
-    return false;
+    return supabaseClient.addNewTask(todo);
   }
 
   @override
   Future<void> deleteTask(String id) async {
-    await supabase.from('todo_list').delete().eq('id', id);
+    supabaseClient.deleteTask(id);
   }
 
   @override
   Future<List<TodoEntity>> getTodos(String userId) async {
-    final data = await supabase.from('todo_list').select().eq('user_id', userId);
-    return data.map((e)=> TodoEntity.fromJson(e)).toList();
+    return supabaseClient.getTodos(userId);
   }
 
   @override
   Future<void> toggleCompleted  (String id, bool isCompleted) async{
-    await supabase.from('todo_list').update({'is_completed': !isCompleted}).eq('id', id);
-
+    return supabaseClient.toggleCompleted(id, isCompleted);
   }
 
   @override
   Future<void> updateTodo(String id, TodoEntity todo) async {
-     await supabase.from('todo_list').update(todo.toJson()).eq('id', id);
+     return supabaseClient.updateTodo(id, todo);
   }
 
 }

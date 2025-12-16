@@ -26,8 +26,6 @@ class LogInProvider extends ChangeNotifier {
       return;
     }
     navigator.goHome();
-    navigator.showSuccess("login success");
-
   }
 
 

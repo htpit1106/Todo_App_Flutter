@@ -48,36 +48,20 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
   final TextEditingController notesController = TextEditingController();
+  late final AddTaskProvider provider;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = context.read<AddTaskProvider>();
-      TodoEntity? todo = widget.todo;
-      if (widget.todo != null) {
-        final date = AppDateUtils.toDateTime(todo!.time!);
-        final time = AppDateUtils.toTimeOfDay(date);
-        provider.setDate(date);
-        provider.setTime(time);
-        taskTitleController.text = todo.title ?? "";
-        notesController.text = todo.notes ?? "";
-      }
+    provider = context.read<AddTaskProvider>();
 
-      dateController.text = AppDateUtils.formatDate(provider.date);
-      timeController.text = AppDateUtils.formatTimeOfDayToString(provider.time);
+    TodoEntity? todo = widget.todo;
+    provider.initialData(todo);
 
-      provider.setCategory(widget.todo?.category ?? Category.task);
-    });
-  }
-
-  @override
-  void dispose() {
-    taskTitleController.dispose();
-    dateController.dispose();
-    timeController.dispose();
-    notesController.dispose();
-    super.dispose();
+    taskTitleController.text = todo?.title ?? "";
+    notesController.text = todo?.notes ?? "";
+    dateController.text = AppDateUtils.formatDate(provider.date);
+    timeController.text = AppDateUtils.formatTimeOfDayToString(provider.time);
   }
 
   @override
@@ -85,140 +69,152 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
     final provider = context.read<AddTaskProvider>();
 
     final titlePage = widget.todo != null ? "Edit Task" : S.of(context).title_add_new_task;
-    return Scaffold(
-      body: Column(
-        children: [
-          _buildHeader(context.read<AddTaskProvider>(), titlePage),
-          const SizedBox(height: 24),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppDimen.paddingNormal),
-              child: _buildAddFrom(context, provider),
-            ),
-          ),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        body: Column(
+          children: [
+            _buildHeader(context.read<AddTaskProvider>(), titlePage),
+            const SizedBox(height: 24),
+            _buildAddFrom(context, provider),
+          ],
+        ),
+        bottomNavigationBar: _buttonSave(provider),
+      ),
+    );
+  }
 
-          Padding(
-            padding: const EdgeInsets.all(AppDimen.paddingNormal),
-            child: ButtonPurple(
-              onTap: () async {
-                if (_formKey.currentState!.validate()) {
-                  await provider.saveTask(
-                    todo: widget.todo,
-                    title: taskTitleController.text,
-                    notes: notesController.text,
-                  );
-                  provider.goBackHome(result: true);
-                }
-              },
-              textButton: S.of(context).button_save,
-            ),
-          ),
-        ],
+  _buttonSave(AddTaskProvider provider) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ButtonPurple(
+        onTap: () async {
+          if (_formKey.currentState!.validate()) {
+            await provider.saveTask(
+              todo: widget.todo,
+              title: taskTitleController.text,
+              notes: notesController.text,
+            );
+            provider.goBackHome(result: true);
+          }
+        },
+        textButton: S.of(context).button_save,
       ),
     );
   }
 
   Widget _buildAddFrom(BuildContext context, AddTaskProvider provider) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppTextFormField(
-            validator: (value) => AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
-            textLabel: S.of(context).label_task_title,
-            hintText: S.of(context).hint_task_title,
-            controller: taskTitleController,
-          ),
-          const SizedBox(height: 24),
+    return Expanded(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(AppDimen.paddingNormal),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppTextFormField(
+                validator: (value) =>
+                    AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
+                textLabel: S.of(context).label_task_title,
+                hintText: S.of(context).hint_task_title,
+                controller: taskTitleController,
+              ),
+              const SizedBox(height: 24),
 
-          // Category row
-          Consumer<AddTaskProvider>(
-            builder: (BuildContext context, value, Widget? child) {
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              // Category row
+              Selector<AddTaskProvider, Category>(
+                selector: (_, provider) => provider.category ?? Category.task,
+                builder: (context, category, child) {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(S.of(context).label_category, style: AppTextStyle.bodyMedium),
+                      const SizedBox(width: 8),
+                      ButtonCategory(
+                        onTap: () {
+                          provider.setCategory(Category.task);
+                        },
+                        icPosition: AppIcons.icCategoryTask,
+                        borderColor: category == Category.task ? Colors.black : Colors.white,
+                      ),
+                      const SizedBox(width: 16),
+                      ButtonCategory(
+                        onTap: () {
+                          provider.setCategory(Category.goal);
+                        },
+                        icPosition: AppIcons.icCategoryGoal,
+                        borderColor: category == Category.goal ? Colors.black : Colors.white,
+                      ),
+                      const SizedBox(width: 16),
+                      ButtonCategory(
+                        onTap: () {
+                          provider.setCategory(Category.event);
+                        },
+                        icPosition: AppIcons.icCategoryEvent,
+                        borderColor: category == Category.event ? Colors.black : Colors.white,
+                      ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 24),
+
+              // Date & Time row
+              Row(
                 children: [
-                  Text(S.of(context).label_category, style: AppTextStyle.bodyMedium),
+                  Flexible(
+                    flex: 1,
+                    child: AppTextFormField(
+                      validator: (value) =>
+                          AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
+                      readOnly: true,
+                      onTap: () async {
+                        final date = await AppDateUtils.pickerDateShow(context, provider.date);
+                        dateController.text = AppDateUtils.formatDate(date);
+                        provider.setDate(date);
+                      },
+                      icSuffix: AppIcons.icCalendar,
+                      textLabel: S.of(context).label_date,
+                      hintText: S.of(context).hint_date,
+                      controller: dateController,
+                    ),
+                  ),
                   const SizedBox(width: 8),
-                  ButtonCategory(
-                    onTap: () {
-                      value.setCategory(Category.task);
-                    },
-                    icPosition: AppIcons.icCategoryTask,
-                    borderColor: value.category == Category.task ? Colors.black : Colors.white,
-                  ),
-                  const SizedBox(width: 16),
-                  ButtonCategory(
-                    onTap: () {
-                      provider.setCategory(Category.goal);
-                    },
-                    icPosition: AppIcons.icCategoryGoal,
-                    borderColor: provider.category == Category.goal ? Colors.black : Colors.white,
-                  ),
-                  const SizedBox(width: 16),
-                  ButtonCategory(
-                    onTap: () {
-                      value.setCategory(Category.event);
-                    },
-                    icPosition: AppIcons.icCategoryEvent,
-                    borderColor: provider.category == Category.event ? Colors.black : Colors.white,
+                  Flexible(
+                    flex: 1,
+                    child: AppTextFormField(
+                      validator: (value) =>
+                          AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
+                      onTap: () async {
+                        final time = await AppDateUtils.pickerTimeShow(context, provider.time);
+                        timeController.text = AppDateUtils.formatTimeOfDayToString(time);
+                        provider.setTime(time);
+                      },
+                      readOnly: true,
+                      icSuffix: AppIcons.icClock,
+                      textLabel: S.of(context).label_time,
+                      hintText: S.of(context).hint_time,
+                      controller: timeController,
+                    ),
                   ),
                 ],
-              );
-            },
-          ),
-          const SizedBox(height: 24),
+              ),
+              const SizedBox(height: 24),
 
-          // Date & Time row
-          Row(
-            children: [
-              Flexible(
-                flex: 1,
-                child: AppTextFormField(
-                  validator: (value) => AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
-                  readOnly: true,
-                  onTap: () async {
-                    final date = await AppDateUtils.pickerDateShow(context, provider.date);
-                    dateController.text = AppDateUtils.formatDate(date);
-                    provider.setDate(date);
-                  },
-                  icSuffix: AppIcons.icCalendar,
-                  textLabel: S.of(context).label_date,
-                  hintText: S.of(context).hint_date,
-                  controller: dateController,
-                ),
+              AppTextFormField(
+                isMultiLine: true,
+                minLine: 5,
+                keyboardType: TextInputType.multiline,
+                textLabel: S.of(context).label_notes,
+                hintText: S.of(context).hint_notes,
+                controller: notesController,
               ),
-              const SizedBox(width: 8),
-              Flexible(
-                flex: 1,
-                child: AppTextFormField(
-                  validator: (value) => AppValidator.validateEmpty(value, S.of(context).valid_field_empty),
-                  onTap: () async {
-                    final time = await AppDateUtils.pickerTimeShow(context, provider.time);
-                    timeController.text = AppDateUtils.formatTimeOfDayToString(time);
-                    provider.setTime(time);
-                  },
-                  readOnly: true,
-                  icSuffix: AppIcons.icClock,
-                  textLabel: S.of(context).label_time,
-                  hintText: S.of(context).hint_time,
-                  controller: timeController,
-                ),
-              ),
+              const SizedBox(height: 16),
             ],
           ),
-          const SizedBox(height: 24),
-
-          AppTextFormField(
-            isMultiLine: true,
-            minLine: 5,
-            keyboardType: TextInputType.multiline,
-            textLabel: S.of(context).label_notes,
-            hintText: S.of(context).hint_notes,
-            controller: notesController,
-          ),
-          const SizedBox(height: 16),
-        ],
+        ),
       ),
     );
   }
@@ -231,7 +227,7 @@ class _AddTaskChildPageState extends State<AddTaskChildPage> {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppDimen.paddingNormal),
           child: Row(
             children: [
               IconButton(

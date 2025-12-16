@@ -42,6 +42,6 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
   void onBackHome(){
-    navigator.goBackHome(_profile?.avatarLink?? "");
+    navigator.goBackHome(_profile?.avatarLink);
   }
 }

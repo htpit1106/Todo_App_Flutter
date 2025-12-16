@@ -91,18 +91,18 @@ class _UpdateProfilePageChildState extends State<UpdateProfilePageChild> {
           Center(
             child: Column(
               children: [
-                Consumer<UpdateProfileProvider>(
-                  builder: (BuildContext context, value, Widget? child) {
-                    return (value.isLoading == true)
+                Selector<UpdateProfileProvider, String? >(
+                  builder: ( context, avatarUrl, child) {
+                    return (provider.isLoading == true)
                         ? const AppCircularProgressIndicator()
                         : CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.grey.shade200,
-                            backgroundImage: provider.avatarUrl != null
-                                ? Image.network(value.avatarUrl!).image
+                            backgroundImage: avatarUrl != null
+                                ? Image.network(avatarUrl).image
                                 : AssetImage(AppIcons.icAvatar),
                           );
-                  },
+                  }, selector: (_, provider) => provider.avatarUrl,
                 ),
 
                 TextButton(
@@ -118,7 +118,6 @@ class _UpdateProfilePageChildState extends State<UpdateProfilePageChild> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
 
           // 2. Name
           AppTextFormField(
@@ -140,7 +139,6 @@ class _UpdateProfilePageChildState extends State<UpdateProfilePageChild> {
             controller: emailController,
             icPrefix: Icons.email,
           ),
-          const SizedBox(height: 16),
 
           // 4. Birth Date
           AppTextFormField(

@@ -9,12 +9,17 @@ class UpdateProfileProvider extends ChangeNotifier {
   final UpdateProfileNavigator navigator;
   final StorageService storageService;
   String? _avatarUrl;
+
   String? get avatarUrl => _avatarUrl;
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
-  UpdateProfileProvider({required this.profileRepo, required this.navigator, required this.storageService});
-
+  UpdateProfileProvider({
+    required this.profileRepo,
+    required this.navigator,
+    required this.storageService,
+  });
 
   void setAvatarUrl(String? url) {
     _avatarUrl = url;
@@ -23,8 +28,14 @@ class UpdateProfileProvider extends ChangeNotifier {
 
   // update profile
   Future<void> updateProfile({required ProfileEntity profile}) async {
-    await profileRepo.updateProfile(profile, profile.id!);
-    navigator.goBackHome(reload: true);
+    if (profile.id == null) return;
+
+    try {
+      await profileRepo.updateProfile(profile, profile.id!);
+      navigator.goBackHome(reload: true);
+    } catch (e) {
+      debugPrint("Error: $e");
+    }
   }
 
   Future<void> updateAvatar(ProfileEntity currentProfile, ImageSourceType sourceType) async {
@@ -33,15 +44,16 @@ class UpdateProfileProvider extends ChangeNotifier {
     String? userId = currentProfile.id;
     if (userId == null) return;
 
-
     _isLoading = true;
     notifyListeners();
-    _avatarUrl = await storageService.uploadImage(imageFile, userId);
-    // delay 2 s
-    await Future.delayed(const Duration(seconds: 2));
-    _isLoading = false;
-    notifyListeners();
+
+    try {
+      _avatarUrl = await storageService.uploadImage(imageFile, userId);
+    } catch (e) {
+      debugPrint("Error: $e");
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }
-
-// library, camera

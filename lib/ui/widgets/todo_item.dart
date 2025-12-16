@@ -23,13 +23,17 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Dismissible(
-        key: ValueKey(todo.id),
-        direction: DismissDirection.endToStart,
-        onDismissed: (_) => onDismissed?.call(),
-        child: _buildContent(),
+    return Dismissible(
+      key: ValueKey(todo.id),
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) => onDismissed?.call(),
+      child: Material(
+        color: Colors.white,
+        borderRadius: borderRadius,
+        child: InkWell(
+          onTap: onTap,
+          child: _buildContent(),
+        ),
       ),
     );
   }
@@ -38,7 +42,6 @@ class TodoItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
         border: const Border(
           bottom: BorderSide(color: Colors.grey),
         ),
@@ -66,12 +69,17 @@ class TodoItem extends StatelessWidget {
               ),
             ),
           ),
-          InkWell(
-            onTap: toggleCompleteStatus,
-            child: Image.asset(
-              todo.isCompleted
-                  ? AppIcons.icCheckedTrue
-                  : AppIcons.icCheckedFalse,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: toggleCompleteStatus,
+              child: Image.asset(
+                todo.isCompleted
+                    ? AppIcons.icCheckedTrue
+                    : AppIcons.icCheckedFalse,
+                width: 44,
+                height: 44,
+              ),
             ),
           ),
         ],
